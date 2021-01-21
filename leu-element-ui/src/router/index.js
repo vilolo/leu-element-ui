@@ -6,11 +6,23 @@ Vue.use(Router);
 export default new Router({
     mode: "history",
     routes: [
-      // 登录
       {
-        path: "/test",
-        name: "test",
-        component: () => import("../views/test.vue")
+        path: "/",
+        name: "index",
+        component: () => import("../views/base/layout.vue"),
+        redirect: '/home',
+        children: [
+          {
+            path: "/home",
+            name: "home",
+            component: () => import("../views/home.vue")
+          },
+          {
+            path: "/p1",
+            name: "p1",
+            component: () => import("../views/p1.vue")
+          }
+        ]
       }
     ]
 });

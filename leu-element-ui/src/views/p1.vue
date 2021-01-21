@@ -1,0 +1,86 @@
+<template>
+    <div>
+        <el-row :gutter="20">
+            <el-col :span="16">
+                <h1>工具：</h1>
+            </el-col>
+            <el-col :span="16">
+                <el-button type="primary" @click="openUrl(urlList.dianxiaomi)">小秘</el-button>
+                <el-button type="primary" @click="openUrl(urlList.translate)">翻译</el-button>
+            </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+            <el-col :span="16">
+                <h1>店铺：</h1>
+            </el-col>
+            <el-col :span="16">
+                <el-button type="primary" @click="openUrl(urlList.sp1)">第一批</el-button>
+                <el-button type="primary" @click="openUrl(urlList.sp2)">第二批</el-button>
+            </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+            <el-col :span="16">
+                <h1>查询：</h1>
+            </el-col>
+            <el-col :span="16">
+                <el-input placeholder="请输入内容"/> <el-button>搜索</el-button>
+            </el-col>
+        </el-row>
+    </div>
+</template>
+
+<script>
+import {urlList} from '../common/urls'
+export default {
+    data(){
+        return {
+            urlList:urlList
+        }
+    },
+    methods:{
+        openUrl: function(urlList, keyword){
+            if (typeof(keyword) === 'undefined'){
+                keyword = ''
+            }
+            
+            for (let item in urlList) {
+                window.open(urlList[item].replace('@keyword@', keyword))
+            }
+        },
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+  .el-row {
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
+  .el-input {
+    width: 200px;
+  }
+</style>
