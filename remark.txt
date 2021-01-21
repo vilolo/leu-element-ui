@@ -1,1 +1,3 @@
 vue create leu-element-ui
+
+npm i element-ui -S
