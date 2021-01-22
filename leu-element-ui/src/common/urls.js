@@ -26,6 +26,12 @@ let urlList = {
     dianxiaomi:['https://www.dianxiaomi.com/crawl/index.htm'],
 
     translate:['https://translate.google.cn/'],
+
+    taobao:[
+        'https://s.taobao.com/search?q=@keyword@',
+		'https://s.1688.com/selloffer/offer_search.htm?keywords=@keyword@',
+        'https://s.1688.com/kuajing/offer_search.htm?keywords=@keyword@',
+    ],
 }
 
 export {

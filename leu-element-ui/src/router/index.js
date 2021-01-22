@@ -21,6 +21,11 @@ export default new Router({
             path: "/p1",
             name: "p1",
             component: () => import("../views/p1.vue")
+          },
+          {
+            path: "/market",
+            name: "market",
+            component: () => import("../views/market.vue")
           }
         ]
       }

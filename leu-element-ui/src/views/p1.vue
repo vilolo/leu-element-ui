@@ -7,6 +7,8 @@
             <el-col :span="16">
                 <el-button type="primary" @click="openUrl(urlList.dianxiaomi)">小秘</el-button>
                 <el-button type="primary" @click="openUrl(urlList.translate)">翻译</el-button>
+                <el-button type="primary" @click="toUrl('http://198.35.45.87:8095/#/market')">平台分析</el-button>
+                <el-button type="primary" @click="toPath('/market')">分析2</el-button>
             </el-col>
         </el-row>
 
@@ -25,7 +27,7 @@
                 <h1>查询：</h1>
             </el-col>
             <el-col :span="16">
-                <el-input placeholder="请输入内容"/> <el-button>搜索</el-button>
+                <el-input v-model="keyword" placeholder="请输入内容"/> <el-button @click="openUrl(urlList.taobao, keyword, true)">搜索</el-button>
             </el-col>
         </el-row>
     </div>
@@ -33,29 +35,46 @@
 
 <script>
 import {urlList} from '../common/urls'
+import {$URL} from '../common/gbk'
+
 export default {
     data(){
         return {
-            urlList:urlList
+            urlList: urlList,
+            keyword: ''
         }
     },
     methods:{
-        openUrl: function(urlList, keyword){
-            if (typeof(keyword) === 'undefined'){
-                keyword = ''
-            }
-            
-            for (let item in urlList) {
-                window.open(urlList[item].replace('@keyword@', keyword))
-            }
-        },
+      openUrl: function(urlList, keyword, isEncode){
+        if (typeof(keyword) === 'undefined'){
+            keyword = ''
+        }
+
+        if (keyword.length > 0 && isEncode == true){
+            keyword = $URL.encode(keyword)
+        }
+
+        for (let item in urlList) {
+            window.open(urlList[item].replace('@keyword@', keyword))
+        }
+      },
+      toUrl: function(url){
+        window.open(url, '_blank');
+      },
+      toPath: function(path){
+        // this.$router.push(path)
+        let url = this.$router.resolve({
+            path: path
+        });
+        window.open(url.href, '_blank');
+      }
     },
     created(){
-      let url = this.$api.test;
-      this.$post(url, {"a":'aaa'}).then(function (res) {
-          console.log("=======================")
-          console.log(res)
-      });
+      // let url = this.$api.test;
+      // this.$post(url, {"a":'aaa'}).then(function (res) {
+      //     console.log("=======================")
+      //     console.log(res)
+      // });
     }
 }
 </script>
