@@ -1,3 +1,7 @@
 vue create leu-element-ui
 
 npm i element-ui -S
+
+npm install -D sass-loader node-sass
+
+npm install --save axios

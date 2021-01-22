@@ -49,6 +49,13 @@ export default {
                 window.open(urlList[item].replace('@keyword@', keyword))
             }
         },
+    },
+    created(){
+      let url = this.$api.test;
+      this.$post(url, {"a":'aaa'}).then(function (res) {
+          console.log("=======================")
+          console.log(res)
+      });
     }
 }
 </script>
