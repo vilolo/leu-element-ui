@@ -18,7 +18,7 @@
         <el-button type="warning" @click="openUrl(urlList.kiti)">kitimall</el-button>
 
         <h2 />
-        工具：<el-button type="success">计价</el-button>
+        工具：<el-button type="success" @click="openUrl(urlList.countPrice)">计价</el-button>
         <el-button type="success" @click="openUrl(urlList.translate)">翻译</el-button>
 
         <h2 />

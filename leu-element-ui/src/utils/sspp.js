@@ -21,7 +21,9 @@ export const urlList = {
     'https://seller.sg.shopee.cn/webchat/conversations'
   ],
 
-  market: ['http://198.35.45.87:8095/#/market'],
+  market: ['/#/sspp/table'],
+
+  countPrice: ['http://local.shop/pricePro.html'],
 
   allStore2: [
     // 台灣
