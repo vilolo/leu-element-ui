@@ -21,6 +21,11 @@ const ssppRouter = {
       path: 'market',
       component: () => import('@/views/sspp/market'),
       hidden: true
+    },
+    {
+      path: 'table',
+      component: () => import('@/views/sspp/table'),
+      hidden: true
     }
   ]
 }
