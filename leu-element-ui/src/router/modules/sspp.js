@@ -5,7 +5,6 @@ import Layout from '@/layout'
 const ssppRouter = {
   path: '/sspp',
   component: Layout,
-  redirect: '/table/index',
   name: 'Sspp',
   meta: {
     title: 'Sspp',
@@ -17,6 +16,11 @@ const ssppRouter = {
       component: () => import('@/views/sspp/index'),
       name: 'SsppIndex',
       meta: { title: 'Sspp Index' }
+    },
+    {
+      path: 'market',
+      component: () => import('@/views/sspp/market'),
+      hidden: true
     }
   ]
 }
