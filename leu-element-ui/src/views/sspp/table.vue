@@ -25,6 +25,8 @@
       v-loading="listLoading"
       :data="list"
       border
+      :header-cell-style="rowClass"
+      :cell-style="cellStyle"
       fit
       highlight-current-row
       style="width: 100%;"
@@ -38,7 +40,7 @@
       </el-table-column>
       <el-table-column fixed label="NAME" prop="name" sortable align="center" width="120">
         <template slot-scope="{row}">
-          <span><a :href="row.url" target="_blank">{{ row.name }}</a></span>
+          <span><el-link type="primary" :href="row.url" target="_blank">{{ row.name }}</el-link></span>
         </template>
       </el-table-column>
       <el-table-column fixed label="IMG" prop="name" sortable align="center" width="110">
@@ -68,88 +70,51 @@
           <span>{{ row.days }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="近期销量" prop="sold" sortable align="center" width="80">
-        <template slot-scope="{row}">
-          <span>{{ row.sold }}</span>
-        </template>
+
+      <el-table-column style="background:red" align="center" label="近期数据">
+        <el-table-column label="销量" style="background:red" prop="sold" sortable align="center" width="80">
+          <template slot-scope="{row}">
+            <span>{{ row.sold }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="每日平均销量"
+          prop="avgSold"
+          sortable
+          align="center"
+          width="80"
+          :sort-method="(a,b) => sortMethod(a ,b , 'avgSold')"
+        >
+          <template slot-scope="{row}">
+            <span>{{ row.avgSold }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="收益（10%）"
+          prop="soldProfit"
+          sortable
+          align="center"
+          width="80"
+          :sort-method="(a,b) => sortMethod(a ,b , 'soldProfit')"
+        >
+          <template slot-scope="{row}">
+            <span>{{ row.soldProfit }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="每日平均收益"
+          prop="avgSoldProfit"
+          sortable
+          align="center"
+          width="80"
+          :sort-method="(a,b) => sortMethod(a ,b , 'avgSoldProfit')"
+        >
+          <template slot-scope="{row}">
+            <span>{{ row.avgSoldProfit }}</span>
+          </template>
+        </el-table-column>
       </el-table-column>
-      <el-table-column
-        label="近期平均销量"
-        prop="avgSold"
-        sortable
-        align="center"
-        width="80"
-        :sort-method="(a,b) => sortMethod(a ,b , 'avgSold')"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.avgSold }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="近期收益（10%）"
-        prop="soldProfit"
-        sortable
-        align="center"
-        width="80"
-        :sort-method="(a,b) => sortMethod(a ,b , 'soldProfit')"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.soldProfit }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="近期平均收益"
-        prop="avgSoldProfit"
-        sortable
-        align="center"
-        width="80"
-        :sort-method="(a,b) => sortMethod(a ,b , 'avgSoldProfit')"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.avgSoldProfit }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="总销量" prop="historicalSold" sortable align="center" width="80">
-        <template slot-scope="{row}">
-          <span>{{ row.historicalSold }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="总平均销量"
-        prop="avgHistoricalSold"
-        sortable
-        align="center"
-        width="80"
-        :sort-method="(a,b) => sortMethod(a ,b , 'avgHistoricalSold')"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.avgHistoricalSold }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="总收益"
-        prop="soldHistoricalProfit"
-        sortable
-        align="center"
-        width="80"
-        :sort-method="(a,b) => sortMethod(a ,b , 'soldHistoricalProfit')"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.soldHistoricalProfit }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="总平均收益"
-        prop="avgSoldHistoricalProfit"
-        sortable
-        align="center"
-        width="80"
-        :sort-method="(a,b) => sortMethod(a ,b , 'avgSoldHistoricalProfit')"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.avgSoldHistoricalProfit }}</span>
-        </template>
-      </el-table-column>
+
       <el-table-column
         label="平均浏览数"
         prop="avgViewCount"
@@ -162,18 +127,51 @@
           <span>{{ row.avgViewCount }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="评分"
-        prop="itemRating"
-        sortable
-        align="center"
-        width="80"
-        :sort-method="(a,b) => sortMethod(a ,b , 'itemRating')"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.itemRating }}</span>
-        </template>
+
+      <el-table-column label="历史总数据" align="center">
+        <el-table-column label="总销量" prop="historicalSold" sortable align="center" width="80">
+          <template slot-scope="{row}">
+            <span>{{ row.historicalSold }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="每日平均销量"
+          prop="avgHistoricalSold"
+          sortable
+          align="center"
+          width="80"
+          :sort-method="(a,b) => sortMethod(a ,b , 'avgHistoricalSold')"
+        >
+          <template slot-scope="{row}">
+            <span>{{ row.avgHistoricalSold }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="总收益"
+          prop="soldHistoricalProfit"
+          sortable
+          align="center"
+          width="80"
+          :sort-method="(a,b) => sortMethod(a ,b , 'soldHistoricalProfit')"
+        >
+          <template slot-scope="{row}">
+            <span>{{ row.soldHistoricalProfit }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="每日平均收益"
+          prop="avgSoldHistoricalProfit"
+          sortable
+          align="center"
+          width="80"
+          :sort-method="(a,b) => sortMethod(a ,b , 'avgSoldHistoricalProfit')"
+        >
+          <template slot-scope="{row}">
+            <span>{{ row.avgSoldHistoricalProfit }}</span>
+          </template>
+        </el-table-column>
       </el-table-column>
+
       <el-table-column
         label="平均收藏"
         prop="avgLike"
@@ -184,6 +182,40 @@
       >
         <template slot-scope="{row}">
           <span>{{ row.avgLike }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="广告词"
+        prop="adsKeyword"
+        sortable
+        align="center"
+        width="80"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.adsKeyword }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="地址"
+        prop="shopLocation"
+        sortable
+        align="center"
+        width="80"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.shopLocation }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="评分"
+        prop="itemRating"
+        sortable
+        align="center"
+        width="80"
+        :sort-method="(a,b) => sortMethod(a ,b , 'itemRating')"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.itemRating }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -234,8 +266,49 @@ export default {
       }).catch((e) => {})
       this.listLoading = false
     },
+
     sortMethod(a, b, column) {
       return parseFloat(a[column]) > parseFloat(b[column]) ? 1 : -1
+    },
+
+    // 设置表头的颜色
+    rowClass({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0 && columnIndex === 6) {
+        return { background: '#409EFF', color: 'white' }
+      }
+      if (rowIndex === 0 && columnIndex === 8) {
+        return { background: '#E6A23C', color: 'white' }
+      }
+    },
+
+    // 设置指定行、列、具体单元格颜色
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      let i = 6
+      if (columnIndex === i++) {
+        return { background: '#409EFF', color: 'white' }
+      }
+      if (columnIndex === i++) {
+        return { background: '#67C23A', color: 'white' }
+      }
+      if (columnIndex === i++) {
+        return { background: '#E6A23C', color: 'white' }
+      }
+      if (columnIndex === i++) {
+        return { background: '#F56C6C', color: 'white' }
+      }
+      i++
+      if (columnIndex === i++) {
+        return { background: '#409EFF', color: 'white' }
+      }
+      if (columnIndex === i++) {
+        return { background: '#67C23A', color: 'white' }
+      }
+      if (columnIndex === i++) {
+        return { background: '#E6A23C', color: 'white' }
+      }
+      if (columnIndex === i++) {
+        return { background: '#F56C6C', color: 'white' }
+      }
     }
   }
 }
