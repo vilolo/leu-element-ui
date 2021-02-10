@@ -31,17 +31,7 @@
         <el-button type="danger" @click="openUrl(urlList.taobao, kw, true)">搜索</el-button>
       </el-tab-pane>
       <el-tab-pane label="模板">
-        <el-tabs type="border-card">
-          <el-tab-pane label="工具">
-            sadf
-          </el-tab-pane>
-          <el-tab-pane label="工具">
-            9999
-          </el-tab-pane>
-        </el-tabs>
-      </el-tab-pane>
-      <el-tab-pane label="分析">
-        分析
+        <stemplate />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -50,7 +40,11 @@
 <script>
 import { urlList } from '../../utils/sspp'
 import { $URL } from '../../utils/gbk'
+import Stemplate from '@/components/Sspp/Stemplate'
 export default {
+  components: {
+    Stemplate
+  },
   data() {
     return {
       urlList: urlList,
