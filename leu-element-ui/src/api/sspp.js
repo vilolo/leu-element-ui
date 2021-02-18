@@ -25,3 +25,11 @@ export function saveTemplate(params) {
     params: params
   })
 }
+
+export function getCategory(params) {
+  return request({
+    url: lumenApi + '/getCategory',
+    method: 'get',
+    params: params
+  })
+}

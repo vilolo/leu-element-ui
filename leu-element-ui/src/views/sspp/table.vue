@@ -15,8 +15,59 @@
       <el-input v-model="newest" style="width: 200px;" placeholder="newest" />
       <br>
       <el-input v-model="keyword" style="width: 200px;" class="filter-item" placeholder="keyword" />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
+      </el-button>
+      <br>
+      <el-select v-model="cid" placeholder="请选择">
+        <el-option
+          v-for="item in categoryMy"
+          :key="item.cid"
+          :label="item.cname"
+          :value="item.cid"
+        />
+      </el-select>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'my')">
+        马来
+      </el-button>
+
+      <br>
+      <el-select v-model="cid" placeholder="请选择">
+        <el-option
+          v-for="item in categoryTw"
+          :key="item.cid"
+          :label="item.cname"
+          :value="item.cid"
+        />
+      </el-select>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'tw')">
+        台湾
+      </el-button>
+
+      <br>
+      <el-select v-model="cid" placeholder="请选择">
+        <el-option
+          v-for="item in categoryTh"
+          :key="item.cid"
+          :label="item.cname"
+          :value="item.cid"
+        />
+      </el-select>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'th')">
+        泰国
+      </el-button>
+
+      <br>
+      <el-select v-model="cid" placeholder="请选择">
+        <el-option
+          v-for="item in categorySg"
+          :key="item.cid"
+          :label="item.cname"
+          :value="item.cid"
+        />
+      </el-select>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'sg')">
+        新加坡
       </el-button>
       <br><br>
       <span>商品总数：{{ totalGoods }}, 广告数：{{ totalAds }}</span>
@@ -223,7 +274,7 @@
 </template>
 
 <script>
-import { getMarketData } from '@/api/sspp'
+import { getMarketData, getCategory } from '@/api/sspp'
 export default {
   data: function() {
     return {
@@ -243,22 +294,45 @@ export default {
         tw: '台湾',
         th: '泰国',
         br: '巴西',
-        sg: '巴西'
-      }
+        sg: '新加坡'
+      },
+      categoryMy: [],
+      categoryTw: [],
+      categoryTh: [],
+      categorySg: [],
+      cid: ''
     }
   },
+  created() {
+    getCategory({ shop: 'my' }).then(response => {
+      this.categoryMy = response.data
+    })
+
+    getCategory({ shop: 'tw' }).then(response => {
+      this.categoryTw = response.data
+    })
+
+    getCategory({ shop: 'th' }).then(response => {
+      this.categoryTh = response.data
+    })
+
+    getCategory({ shop: 'sg' }).then(response => {
+      this.categorySg = response.data
+    })
+  },
   methods: {
-    handleFilter() {
+    handleFilter(type, shop) {
       this.list = []
       this.listLoading = true
       getMarketData({
         keyword: this.keyword,
-        store: this.store,
-        type: this.type,
+        store: shop === undefined ? this.store : shop,
+        type: type === 3 ? type : this.type,
         minPrice: this.minPrice,
         maxPrice: this.maxPrice,
         oversea: this.oversea,
-        newest: this.newest
+        newest: this.newest,
+        cids: this.cid
       }).then(response => {
         this.list = response.data.goodsList
         this.totalGoods = response.data.info.total_count
