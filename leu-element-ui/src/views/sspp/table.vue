@@ -21,7 +21,7 @@
       <br>
       <el-select v-model="cidMy" placeholder="请选择">
         <el-option
-          v-for="item in category_my"
+          v-for="item in categoryList['my']"
           :key="item.cid"
           :label="item.cname"
           :value="item.cid"
@@ -38,7 +38,7 @@
       <br>
       <el-select v-model="cidTw" placeholder="请选择">
         <el-option
-          v-for="item in category_tw"
+          v-for="item in categoryList['tw']"
           :key="item.cid"
           :label="item.cname"
           :value="item.cid"
@@ -55,7 +55,7 @@
       <br>
       <el-select v-model="cidTh" placeholder="请选择">
         <el-option
-          v-for="item in category_th"
+          v-for="item in categoryList['th']"
           :key="item.cid"
           :label="item.cname"
           :value="item.cid"
@@ -72,7 +72,7 @@
       <br>
       <el-select v-model="cidSg" placeholder="请选择">
         <el-option
-          v-for="item in category_sg"
+          v-for="item in categoryList['sg']"
           :key="item.cid"
           :label="item.cname"
           :value="item.cid"
@@ -312,10 +312,12 @@ export default {
         br: '巴西',
         sg: '新加坡'
       },
-      category_my: [],
-      category_tw: [],
-      category_th: [],
-      category_sg: [],
+      categoryList: {
+        my: [],
+        tw: [],
+        th: [],
+        sg: []
+      },
       cid: this.$route.query.cid,
       cidMy: '',
       cidTw: '',
@@ -324,20 +326,22 @@ export default {
     }
   },
   created() {
+    console.log(this.categoryList['aa'])
+
     getCategory({ shop: 'my' }).then(response => {
-      this.category_my = response.data
+      this.categoryList['my'] = response.data
     })
 
     getCategory({ shop: 'tw' }).then(response => {
-      this.category_tw = response.data
+      this.categoryList['tw'] = response.data
     })
 
     getCategory({ shop: 'th' }).then(response => {
-      this.category_th = response.data
+      this.categoryList['th'] = response.data
     })
 
     getCategory({ shop: 'sg' }).then(response => {
-      this.category_sg = response.data
+      this.categoryList['sg'] = response.data
     })
 
     if (this.$route.query.type === '3' && this.$route.query.shop && this.cid) {
@@ -366,7 +370,7 @@ export default {
     },
 
     openCategory(shop) {
-      const c = eval('this.category_' + shop)
+      const c = this.categoryList[shop]
       for (const i in c) {
         setTimeout(function() {
           window.open('/#/sspp/table?type=3&oversea=-2&cname=' + c[i].cname + '&shop=' + shop + '&cid=' + c[i].cid, '_blank')
