@@ -274,10 +274,10 @@ export default {
     // 设置表头的颜色
     rowClass({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0 && columnIndex === 6) {
-        return { background: '#409EFF', color: 'white' }
+        return { background: '#87CEFA', color: 'white' }
       }
       if (rowIndex === 0 && columnIndex === 8) {
-        return { background: '#E6A23C', color: 'white' }
+        return { background: '#FFDAB9', color: 'white' }
       }
     },
 
@@ -285,30 +285,43 @@ export default {
     cellStyle({ row, column, rowIndex, columnIndex }) {
       let i = 6
       if (columnIndex === i++) {
-        return { background: '#409EFF', color: 'white' }
+        return { background: '#87CEFA' }
       }
       if (columnIndex === i++) {
-        return { background: '#67C23A', color: 'white' }
+        return { background: '#90EE90' }
       }
       if (columnIndex === i++) {
-        return { background: '#E6A23C', color: 'white' }
+        return { background: '#EEE8AA' }
       }
       if (columnIndex === i++) {
-        return { background: '#F56C6C', color: 'white' }
+        return { background: '#FFDAB9' }
       }
       i++
       if (columnIndex === i++) {
-        return { background: '#409EFF', color: 'white' }
+        return { background: '#87CEFA' }
       }
       if (columnIndex === i++) {
-        return { background: '#67C23A', color: 'white' }
+        return { background: '#90EE90' }
       }
       if (columnIndex === i++) {
-        return { background: '#E6A23C', color: 'white' }
+        return { background: '#EEE8AA' }
       }
       if (columnIndex === i++) {
-        return { background: '#F56C6C', color: 'white' }
+        return { background: '#FFDAB9' }
       }
+
+      // if (columnIndex === i++) {
+      //   return { background: '#409EFF', color: 'white' }
+      // }
+      // if (columnIndex === i++) {
+      //   return { background: '#67C23A', color: 'white' }
+      // }
+      // if (columnIndex === i++) {
+      //   return { background: '#E6A23C', color: 'white' }
+      // }
+      // if (columnIndex === i++) {
+      //   return { background: '#F56C6C', color: 'white' }
+      // }
     }
   }
 }
