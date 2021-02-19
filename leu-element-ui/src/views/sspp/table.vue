@@ -1,89 +1,95 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
+      <el-row>
+        <el-col :span="12">
+          <el-radio v-for="(item, index) in storeList" :key="item.id" v-model="store" :label="index">{{ item }}</el-radio><br><br>
 
-      <el-radio v-for="(item, index) in storeList" :key="item.id" v-model="store" :label="index">{{ item }}</el-radio><br><br>
+          <el-radio v-model="type" label="1">keyword</el-radio>
+          <el-radio v-model="type" label="2">name</el-radio><br><br>
 
-      <el-radio v-model="type" label="1">keyword</el-radio>
-      <el-radio v-model="type" label="2">name</el-radio><br><br>
+          <el-input v-model="minPrice" style="width: 200px;" placeholder="最低" />
+          <el-input v-model="maxPrice" style="width: 200px;" placeholder="最高" />
+          <br>
+          <el-input v-model="oversea" style="width: 200px;" placeholder="-1=location, -2=oversea" />
+          <br>
+          <el-input v-model="newest" style="width: 200px;" placeholder="newest" />
+          <br>
+          <el-input v-model="keyword" style="width: 200px;" class="filter-item" placeholder="keyword" />
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+            Search
+          </el-button>
+          <br>
+        </el-col>
+        <el-col :span="12">
+          <el-select v-model="cidMy" placeholder="请选择">
+            <el-option
+              v-for="item in categoryList['my']"
+              :key="item.cid"
+              :label="item.cname"
+              :value="item.cid"
+            />
+          </el-select>
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'my', cidMy)">
+            马来
+          </el-button>
 
-      <el-input v-model="minPrice" style="width: 200px;" placeholder="最低" />
-      <el-input v-model="maxPrice" style="width: 200px;" placeholder="最高" />
-      <br>
-      <el-input v-model="oversea" style="width: 200px;" placeholder="-1=location, -2=oversea" />
-      <br>
-      <el-input v-model="newest" style="width: 200px;" placeholder="newest" />
-      <br>
-      <el-input v-model="keyword" style="width: 200px;" class="filter-item" placeholder="keyword" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        Search
-      </el-button>
-      <br>
-      <el-select v-model="cidMy" placeholder="请选择">
-        <el-option
-          v-for="item in categoryList['my']"
-          :key="item.cid"
-          :label="item.cname"
-          :value="item.cid"
-        />
-      </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'my', cidMy)">
-        马来
-      </el-button>
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('my')">
+            open all my
+          </el-button>
 
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('my')">
-        open all my
-      </el-button>
+          <br>
+          <el-select v-model="cidTw" placeholder="请选择">
+            <el-option
+              v-for="item in categoryList['tw']"
+              :key="item.cid"
+              :label="item.cname"
+              :value="item.cid"
+            />
+          </el-select>
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'tw', cidTw)">
+            台湾
+          </el-button>
 
-      <br>
-      <el-select v-model="cidTw" placeholder="请选择">
-        <el-option
-          v-for="item in categoryList['tw']"
-          :key="item.cid"
-          :label="item.cname"
-          :value="item.cid"
-        />
-      </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'tw', cidTw)">
-        台湾
-      </el-button>
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('tw')">
+            open all tw
+          </el-button>
 
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('tw')">
-        open all tw
-      </el-button>
+          <br>
+          <el-select v-model="cidTh" placeholder="请选择">
+            <el-option
+              v-for="item in categoryList['th']"
+              :key="item.cid"
+              :label="item.cname"
+              :value="item.cid"
+            />
+          </el-select>
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'th', cidTh)">
+            泰国
+          </el-button>
 
-      <br>
-      <el-select v-model="cidTh" placeholder="请选择">
-        <el-option
-          v-for="item in categoryList['th']"
-          :key="item.cid"
-          :label="item.cname"
-          :value="item.cid"
-        />
-      </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'th', cidTh)">
-        泰国
-      </el-button>
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('th')">
+            open all th
+          </el-button>
 
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('th')">
-        open all th
-      </el-button>
+          <br>
+          <el-select v-model="cidSg" placeholder="请选择">
+            <el-option
+              v-for="item in categoryList['sg']"
+              :key="item.cid"
+              :label="item.cname"
+              :value="item.cid"
+            />
+          </el-select>
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'sg', cidSg)">
+            新加坡
+          </el-button>
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('sg')">
+            open all sg
+          </el-button>
+        </el-col>
+      </el-row>
 
-      <br>
-      <el-select v-model="cidSg" placeholder="请选择">
-        <el-option
-          v-for="item in categoryList['sg']"
-          :key="item.cid"
-          :label="item.cname"
-          :value="item.cid"
-        />
-      </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'sg', cidSg)">
-        新加坡
-      </el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('sg')">
-        open all sg
-      </el-button>
       <br><br>
       <span v-if=" (typeof(this.$route.query.cname) !== 'undefined') "> 【 分类：{{ this.$route.query.cname }} 】</span>
       <span>商品总数：{{ totalGoods }}, 广告数：{{ totalAds }}</span>
