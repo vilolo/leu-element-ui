@@ -360,7 +360,8 @@ export default {
         maxPrice: this.maxPrice,
         oversea: this.oversea,
         newest: this.newest,
-        cids: cid
+        cids: cid,
+        dataFrom: this.$route.query.dataFrom
       }).then(response => {
         this.list = response.data.goodsList
         this.totalGoods = response.data.info.total_count
@@ -373,7 +374,7 @@ export default {
       const c = this.categoryList[shop]
       for (const i in c) {
         setTimeout(function() {
-          window.open('/#/sspp/table?type=3&oversea=-2&cname=' + c[i].cname + '&shop=' + shop + '&cid=' + c[i].cid, '_blank')
+          window.open('/#/sspp/table?type=3&dataFrom=offline&oversea=-2&cname=' + c[i].cname + '&shop=' + shop + '&cid=' + c[i].cid, '_blank')
           // console.log(i)
         }, i * this.randomNum(600, 1200))
       }
