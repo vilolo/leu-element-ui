@@ -19,57 +19,73 @@
         Search
       </el-button>
       <br>
-      <el-select v-model="cid" placeholder="请选择">
+      <el-select v-model="cidMy" placeholder="请选择">
         <el-option
-          v-for="item in categoryMy"
+          v-for="item in category_my"
           :key="item.cid"
           :label="item.cname"
           :value="item.cid"
         />
       </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'my')">
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'my', cidMy)">
         马来
       </el-button>
 
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('my')">
+        open all my
+      </el-button>
+
       <br>
-      <el-select v-model="cid" placeholder="请选择">
+      <el-select v-model="cidTw" placeholder="请选择">
         <el-option
-          v-for="item in categoryTw"
+          v-for="item in category_tw"
           :key="item.cid"
           :label="item.cname"
           :value="item.cid"
         />
       </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'tw')">
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'tw', cidTw)">
         台湾
       </el-button>
 
-      <br>
-      <el-select v-model="cid" placeholder="请选择">
-        <el-option
-          v-for="item in categoryTh"
-          :key="item.cid"
-          :label="item.cname"
-          :value="item.cid"
-        />
-      </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'th')">
-        泰国
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('tw')">
+        open all tw
       </el-button>
 
       <br>
-      <el-select v-model="cid" placeholder="请选择">
+      <el-select v-model="cidTh" placeholder="请选择">
         <el-option
-          v-for="item in categorySg"
+          v-for="item in category_th"
           :key="item.cid"
           :label="item.cname"
           :value="item.cid"
         />
       </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'sg')">
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'th', cidTh)">
+        泰国
+      </el-button>
+
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('th')">
+        open all th
+      </el-button>
+
+      <br>
+      <el-select v-model="cidSg" placeholder="请选择">
+        <el-option
+          v-for="item in category_sg"
+          :key="item.cid"
+          :label="item.cname"
+          :value="item.cid"
+        />
+      </el-select>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'sg', cidSg)">
         新加坡
       </el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('sg')">
+        open all sg
+      </el-button>
       <br><br>
+      <span v-if=" (typeof(this.$route.query.cname) !== 'undefined') "> 【 分类：{{ this.$route.query.cname }} 】</span>
       <span>商品总数：{{ totalGoods }}, 广告数：{{ totalAds }}</span>
     </div>
     <el-table
@@ -282,10 +298,10 @@ export default {
       listLoading: false,
       list: [],
       keyword: '',
-      store: 'my',
+      store: typeof (this.$route.query.shop) === 'undefined' ? 'my' : this.$route.query.shop,
       minPrice: '',
       maxPrice: '',
-      oversea: '',
+      oversea: typeof (this.$route.query.oversea) === 'undefined' ? '' : this.$route.query.oversea,
       newest: 0,
       totalGoods: 0,
       totalAds: 0,
@@ -296,49 +312,81 @@ export default {
         br: '巴西',
         sg: '新加坡'
       },
-      categoryMy: [],
-      categoryTw: [],
-      categoryTh: [],
-      categorySg: [],
-      cid: ''
+      category_my: [],
+      category_tw: [],
+      category_th: [],
+      category_sg: [],
+      cid: this.$route.query.cid,
+      cidMy: '',
+      cidTw: '',
+      cidTh: '',
+      cidSg: ''
     }
   },
   created() {
     getCategory({ shop: 'my' }).then(response => {
-      this.categoryMy = response.data
+      this.category_my = response.data
     })
 
     getCategory({ shop: 'tw' }).then(response => {
-      this.categoryTw = response.data
+      this.category_tw = response.data
     })
 
     getCategory({ shop: 'th' }).then(response => {
-      this.categoryTh = response.data
+      this.category_th = response.data
     })
 
     getCategory({ shop: 'sg' }).then(response => {
-      this.categorySg = response.data
+      this.category_sg = response.data
     })
+
+    if (this.$route.query.type === '3' && this.$route.query.shop && this.cid) {
+      this.handleFilter(3, this.$route.query.shop, this.$route.query.cid)
+    }
   },
   methods: {
-    handleFilter(type, shop) {
+    handleFilter(type, shop, cid) {
       this.list = []
       this.listLoading = true
       getMarketData({
         keyword: this.keyword,
-        store: shop === undefined ? this.store : shop,
+        store: typeof (shop) === 'undefined' ? this.store : shop,
         type: type === 3 ? type : this.type,
         minPrice: this.minPrice,
         maxPrice: this.maxPrice,
         oversea: this.oversea,
         newest: this.newest,
-        cids: this.cid
+        cids: cid
       }).then(response => {
         this.list = response.data.goodsList
         this.totalGoods = response.data.info.total_count
         this.totalAds = response.data.info.total_ads_count
       }).catch((e) => {})
       this.listLoading = false
+    },
+
+    openCategory(shop) {
+      const c = eval('this.category_' + shop)
+      for (const i in c) {
+        setTimeout(function() {
+          window.open('/#/sspp/table?type=3&oversea=-2&cname=' + c[i].cname + '&shop=' + shop + '&cid=' + c[i].cid, '_blank')
+          // console.log(i)
+        }, i * this.randomNum(600, 1200))
+      }
+    },
+
+    randomNum(minNum, maxNum) {
+      switch (arguments.length) {
+        case 1:
+          return parseInt(Math.random() * minNum + 1, 10)
+          //break
+        case 2:
+          return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10)
+          //break
+        default:
+          return 0
+          //break
+      }
     },
 
     sortMethod(a, b, column) {
