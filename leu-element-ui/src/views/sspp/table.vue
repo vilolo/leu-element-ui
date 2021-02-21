@@ -108,7 +108,7 @@
       highlight-current-row
       style="width: 100%;"
       height="800"
-      :default-sort="{prop: 'avgSold', order: 'descending'}"
+      :default-sort="default_sort"
     >
       <el-table-column fixed label="ID" prop="id" sortable align="center" width="50">
         <template scope="scope">
@@ -309,6 +309,7 @@ export default {
   data: function() {
     return {
       type: this.$route.query.type,
+      default_sort: this.$route.query.type !== '4' ? { prop: 'avgSold', order: 'descending' } : {},
       listLoading: false,
       list: [],
       keyword: '',
@@ -478,7 +479,8 @@ export default {
         })
 
         if (response.code === 20000) {
-          window.location.reload()
+          // window.location.reload()
+          this.handleFilter(4)
         }
       })
     },
