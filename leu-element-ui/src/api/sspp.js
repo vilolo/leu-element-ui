@@ -33,3 +33,19 @@ export function getCategory(params) {
     params: params
   })
 }
+
+export function addCollect(params) {
+  return request({
+    url: lumenApi + '/addCollect',
+    method: 'post',
+    params: params
+  })
+}
+
+export function delCollect(id) {
+  return request({
+    url: lumenApi + '/delCollect',
+    method: 'post',
+    params: { id: id }
+  })
+}

@@ -33,7 +33,11 @@ export const urlList = {
 
   dianxiaomi: ['https://www.dianxiaomi.com/crawl/index.htm'],
   translate: ['https://translate.google.cn/'],
-  data: ['https://haiyingshuju.com/newsShopee/index.html#/shopee/goodsSearch'],
+  data: [
+    'https://haiyingshuju.com/newsShopee/index.html#/shopee/goodsSearch',
+    'https://www.dny123.com',
+    'https://www.dny123.com/tools-shopeekw'
+  ],
 
   jcz: ['https://shopee.com.my/jiangcz.my'],
   vil: ['https://xiapi.xiapibuy.com/vilolo99'],

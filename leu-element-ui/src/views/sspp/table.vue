@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-row>
+      <el-row v-if="(type !== '3' && type !== '4')">
         <el-col :span="12">
           <el-radio v-for="(item, index) in storeList" :key="item.id" v-model="store" :label="index">{{ item }}</el-radio><br><br>
 
@@ -87,6 +87,10 @@
           <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('sg')">
             open all sg
           </el-button>
+
+          <el-col>
+            <el-button type="success" @click="openCollect">打开收藏夹</el-button>
+          </el-col>
         </el-col>
       </el-row>
 
@@ -135,7 +139,11 @@
       </el-table-column>
       <el-table-column label="ctime" prop="ctime" sortable align="center" width="80">
         <template slot-scope="{row}">
-          <span>{{ row.ctime }}</span>
+          <span>
+            {{ row.ctime }}
+            <el-button v-if="(type != 4) && row.isShow" @click="collect(row)">收藏</el-button>
+            <el-button v-if="(type == 4)" @click="delCollect(row.did)">删除</el-button>
+          </span>
         </template>
       </el-table-column>
       <el-table-column label="days" prop="days" sortable align="center" width="80">
@@ -296,11 +304,11 @@
 </template>
 
 <script>
-import { getMarketData, getCategory } from '@/api/sspp'
+import { getMarketData, getCategory, addCollect, delCollect } from '@/api/sspp'
 export default {
   data: function() {
     return {
-      type: '1',
+      type: this.$route.query.type,
       listLoading: false,
       list: [],
       keyword: '',
@@ -332,8 +340,6 @@ export default {
     }
   },
   created() {
-    console.log(this.categoryList['aa'])
-
     getCategory({ shop: 'my' }).then(response => {
       this.categoryList['my'] = response.data
     })
@@ -350,8 +356,12 @@ export default {
       this.categoryList['sg'] = response.data
     })
 
-    if (this.$route.query.type === '3' && this.$route.query.shop && this.cid) {
+    if (this.type === '3' && this.$route.query.shop && this.cid) {
       this.handleFilter(3, this.$route.query.shop, this.$route.query.cid)
+    }
+
+    if (this.type === '4') {
+      this.handleFilter(4)
     }
   },
   methods: {
@@ -369,6 +379,9 @@ export default {
         cids: cid,
         dataFrom: this.$route.query.dataFrom
       }).then(response => {
+        for (const index in response.data.goodsList) {
+          response.data.goodsList[index].isShow = true
+        }
         this.list = response.data.goodsList
         this.totalGoods = response.data.info.total_count
         this.totalAds = response.data.info.total_ads_count
@@ -442,19 +455,36 @@ export default {
       if (columnIndex === i++) {
         return { background: '#FFDAB9' }
       }
+    },
 
-      // if (columnIndex === i++) {
-      //   return { background: '#409EFF', color: 'white' }
-      // }
-      // if (columnIndex === i++) {
-      //   return { background: '#67C23A', color: 'white' }
-      // }
-      // if (columnIndex === i++) {
-      //   return { background: '#E6A23C', color: 'white' }
-      // }
-      // if (columnIndex === i++) {
-      //   return { background: '#F56C6C', color: 'white' }
-      // }
+    collect(row) {
+      addCollect({ row: row }).then(response => {
+        this.$message({
+          message: response.msg,
+          type: response.code === 20000 ? 'success' : 'error'
+        })
+
+        if (response.code === 20000) {
+          row.isShow = false
+        }
+      })
+    },
+
+    delCollect(id) {
+      delCollect(id).then(response => {
+        this.$message({
+          message: response.msg,
+          type: response.code === 20000 ? 'success' : 'error'
+        })
+
+        if (response.code === 20000) {
+          window.location.reload()
+        }
+      })
+    },
+
+    openCollect() {
+      window.open('/#/sspp/table?type=4')
     }
   }
 }
