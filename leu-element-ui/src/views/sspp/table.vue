@@ -148,7 +148,14 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="days" prop="days" sortable align="center" width="80">
+      <el-table-column
+        label="days"
+        prop="days"
+        sortable
+        align="center"
+        width="80"
+        :sort-method="(a,b) => sortMethod(a ,b , 'days')"
+      >
         <template slot-scope="{row}">
           <span>{{ row.days }}</span>
         </template>
