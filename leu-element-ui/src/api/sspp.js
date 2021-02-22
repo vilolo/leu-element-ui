@@ -49,3 +49,27 @@ export function delCollect(id) {
     params: { id: id }
   })
 }
+
+export function saveSearchLog(params) {
+  return request({
+    url: lumenApi + '/saveSearchLog',
+    method: 'post',
+    params: params
+  })
+}
+
+export function showSearchLog(params) {
+  return request({
+    url: lumenApi + '/showSearchLog',
+    method: 'get',
+    params: params
+  })
+}
+
+export function delSearchLog(id) {
+  return request({
+    url: lumenApi + '/delSearchLog',
+    method: 'post',
+    params: { id: id }
+  })
+}

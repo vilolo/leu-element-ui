@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-row v-if="(type !== '3' && type !== '4')">
         <el-col :span="12">
-          <el-radio v-for="(item, index) in storeList" :key="item.id" v-model="store" :label="index">{{ item }}</el-radio><br><br>
+          <el-radio v-for="(item, index) in storeList" :key="item.id" v-model="shop" :label="index">{{ item }}</el-radio><br><br>
 
           <el-radio v-model="type" label="1">keyword</el-radio>
           <el-radio v-model="type" label="2">name</el-radio><br><br>
@@ -89,8 +89,17 @@
           </el-button>
 
           <el-col>
-            <el-button type="success" @click="openCollect">打开收藏夹</el-button>
+            <el-button type="success" @click="openCollect">打开商品收藏</el-button>
           </el-col>
+
+          <el-col>
+            <el-button type="success" @click="openSearchLog">打开查询收藏</el-button>
+          </el-col>
+
+          <el-col>
+            <el-button v-if="typeof (this.$route.query.type) === 'undefined' && (typeof (list) !== 'undefined')" type="success" @click="saveSearchLog">收藏该查询</el-button>
+          </el-col>
+
         </el-col>
       </el-row>
 
@@ -304,18 +313,18 @@
 </template>
 
 <script>
-import { getMarketData, getCategory, addCollect, delCollect } from '@/api/sspp'
+import { getMarketData, getCategory, addCollect, delCollect, saveSearchLog } from '@/api/sspp'
 export default {
   data: function() {
     return {
-      type: this.$route.query.type,
+      type: typeof (this.$route.query.type) === 'undefined' ? '1' : this.$route.query.type,
       default_sort: this.$route.query.type !== '4' ? { prop: 'avgSold', order: 'descending' } : {},
       listLoading: false,
       list: [],
-      keyword: '',
-      store: typeof (this.$route.query.shop) === 'undefined' ? 'my' : this.$route.query.shop,
-      minPrice: '',
-      maxPrice: '',
+      keyword: this.$route.query.keyword,
+      shop: typeof (this.$route.query.shop) === 'undefined' ? 'my' : this.$route.query.shop,
+      minPrice: typeof (this.$route.query.minPrice) === 'undefined' ? '' : this.$route.query.minPrice,
+      maxPrice: typeof (this.$route.query.maxPrice) === 'undefined' ? '' : this.$route.query.maxPrice,
       oversea: typeof (this.$route.query.oversea) === 'undefined' ? '' : this.$route.query.oversea,
       newest: 0,
       totalGoods: 0,
@@ -337,7 +346,9 @@ export default {
       cidMy: '',
       cidTw: '',
       cidTh: '',
-      cidSg: ''
+      cidSg: '',
+      dataFrom: this.$route.query.dataFrom,
+      cname: this.$route.query.cname
     }
   },
   created() {
@@ -357,28 +368,24 @@ export default {
       this.categoryList['sg'] = response.data
     })
 
-    if (this.type === '3' && this.$route.query.shop && this.cid) {
-      this.handleFilter(3, this.$route.query.shop, this.$route.query.cid)
-    }
-
-    if (this.type === '4') {
-      this.handleFilter(4)
+    if (this.type !== '') {
+      this.handleFilter()
     }
   },
   methods: {
-    handleFilter(type, shop, cid) {
+    handleFilter() {
       this.list = []
       this.listLoading = true
       getMarketData({
         keyword: this.keyword,
-        store: typeof (shop) === 'undefined' ? this.store : shop,
-        type: type === 3 ? type : this.type,
+        shop: this.shop,
+        type: this.type,
         minPrice: this.minPrice,
         maxPrice: this.maxPrice,
         oversea: this.oversea,
         newest: this.newest,
-        cids: cid,
-        dataFrom: this.$route.query.dataFrom
+        cids: this.cid,
+        dataFrom: this.dataFrom
       }).then(response => {
         for (const index in response.data.goodsList) {
           response.data.goodsList[index].isShow = true
@@ -487,6 +494,30 @@ export default {
 
     openCollect() {
       window.open('/#/sspp/table?type=4')
+    },
+
+    saveSearchLog() {
+      saveSearchLog({
+        keyword: this.keyword,
+        shop: this.shop,
+        type: this.type,
+        minPrice: this.minPrice,
+        maxPrice: this.maxPrice,
+        oversea: this.oversea,
+        newest: this.newest,
+        cids: this.cid,
+        dataFrom: this.dataFrom,
+        cname: this.cname
+      }).then(response => {
+        this.$message({
+          message: response.msg,
+          type: response.code === 20000 ? 'success' : 'error'
+        })
+      })
+    },
+
+    openSearchLog() {
+      window.open('/#/sspp/search-log')
     }
   }
 }

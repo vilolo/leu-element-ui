@@ -26,6 +26,11 @@ const ssppRouter = {
       path: 'table',
       component: () => import('@/views/sspp/table'),
       hidden: true
+    },
+    {
+      path: 'search-log',
+      component: () => import('@/views/sspp/search-log'),
+      hidden: true
     }
   ]
 }
