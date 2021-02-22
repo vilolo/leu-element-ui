@@ -90,16 +90,9 @@
 
           <el-col>
             <el-button type="success" @click="openCollect">打开商品收藏</el-button>
+            <el-button type="warning" @click="openSearchLog">打开查询收藏</el-button>
+            <el-button v-if="isSaveBtn" type="danger" @click="saveSearchLog">收藏该查询</el-button>
           </el-col>
-
-          <el-col>
-            <el-button type="success" @click="openSearchLog">打开查询收藏</el-button>
-          </el-col>
-
-          <el-col>
-            <el-button v-if="typeof (this.$route.query.type) === 'undefined' && (typeof (list) !== 'undefined')" type="success" @click="saveSearchLog">收藏该查询</el-button>
-          </el-col>
-
         </el-col>
       </el-row>
 
@@ -348,7 +341,8 @@ export default {
       cidTh: '',
       cidSg: '',
       dataFrom: this.$route.query.dataFrom,
-      cname: this.$route.query.cname
+      cname: this.$route.query.cname,
+      isSaveBtn: false
     }
   },
   created() {
@@ -393,6 +387,7 @@ export default {
         this.list = response.data.goodsList
         this.totalGoods = response.data.info.total_count
         this.totalAds = response.data.info.total_ads_count
+        this.isSaveBtn = this.isSaveBtn = typeof (this.$route.query.type) === 'undefined'
       }).catch((e) => {})
       this.listLoading = false
     },
