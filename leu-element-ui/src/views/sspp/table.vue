@@ -16,7 +16,7 @@
           <el-input v-model="newest" style="width: 200px;" placeholder="newest" />
           <br>
           <el-input v-model="keyword" style="width: 200px;" class="filter-item" placeholder="keyword" />
-          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter()">
             Search
           </el-button>
           <br>
@@ -369,7 +369,7 @@ export default {
       this.categoryList['sg'] = response.data
     })
 
-    if (this.type !== '') {
+    if (typeof (this.$route.query.type) !== 'undefined') {
       this.handleFilter()
     }
   },
@@ -494,7 +494,7 @@ export default {
 
         if (response.code === 20000) {
           // window.location.reload()
-          this.handleFilter(4)
+          this.handleFilter()
         }
       })
     },
