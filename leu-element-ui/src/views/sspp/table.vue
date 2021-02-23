@@ -30,7 +30,7 @@
               :value="item.cid"
             />
           </el-select>
-          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'my', cidMy)">
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidMy)">
             马来
           </el-button>
 
@@ -47,7 +47,7 @@
               :value="item.cid"
             />
           </el-select>
-          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'tw', cidTw)">
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidTw)">
             台湾
           </el-button>
 
@@ -64,7 +64,7 @@
               :value="item.cid"
             />
           </el-select>
-          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'th', cidTh)">
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidTh)">
             泰国
           </el-button>
 
@@ -81,7 +81,7 @@
               :value="item.cid"
             />
           </el-select>
-          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(3, 'sg', cidSg)">
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidSg)">
             新加坡
           </el-button>
           <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('sg')">
@@ -374,13 +374,18 @@ export default {
     }
   },
   methods: {
-    handleFilter() {
+    handleFilter(cid) {
       this.list = []
+      let type = this.type
       this.listLoading = true
+      if (typeof cid !== 'undefined') {
+        this.cid = cid
+        type = 3
+      }
       getMarketData({
         keyword: this.keyword,
         shop: this.shop,
-        type: this.type,
+        type: type,
         minPrice: this.minPrice,
         maxPrice: this.maxPrice,
         oversea: this.oversea,
