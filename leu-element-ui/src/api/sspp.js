@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
-// var lumenApi = 'http://lumen.leu/index.php/admin/v1'
-var lumenApi = 'http://198.35.45.87:9021/index.php/admin/v1'
+var lumenApi = 'http://lumen.leu/index.php/admin/v1'
+// var lumenApi = 'http://198.35.45.87:9021/index.php/admin/v1'
 export function getMarketData(params) {
   return request({
     url: lumenApi + '/newOrganizeData',
