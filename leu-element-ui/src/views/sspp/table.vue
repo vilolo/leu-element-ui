@@ -352,6 +352,13 @@ export default {
       isSaveBtn: false
     }
   },
+  watch: {
+    list(val, newval) {
+      if (typeof newval === 'undefined') {
+        this.isSaveBtn = false
+      }
+    }
+  },
   created() {
     getCategory({ shop: 'my' }).then(response => {
       this.categoryList['my'] = response.data
