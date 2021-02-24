@@ -10,10 +10,15 @@
 
           <el-input v-model="minPrice" style="width: 200px;" placeholder="最低" />
           <el-input v-model="maxPrice" style="width: 200px;" placeholder="最高" />
+          <br><br>
+
+          <el-radio v-model="oversea" label="-1">Location</el-radio>
+          <el-radio v-model="oversea" label="-2">Oversea</el-radio><br>
+
+          <!-- <el-input v-model="oversea" style="width: 200px;" placeholder="-1=location, -2=oversea" /> -->
           <br>
-          <el-input v-model="oversea" style="width: 200px;" placeholder="-1=location, -2=oversea" />
-          <br>
-          <el-input v-model="newest" style="width: 200px;" placeholder="newest" />
+          <!-- <el-input v-model="newest" style="width: 200px;" placeholder="newest" /> -->
+          <el-input-number v-model="newest" :step="100" />
           <br>
           <el-input v-model="keyword" style="width: 200px;" class="filter-item" placeholder="keyword" />
           <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter()">
@@ -353,8 +358,11 @@ export default {
     }
   },
   watch: {
-    list(val, newval) {
-      if (typeof newval === 'undefined') {
+    list(newVal, oldVal) {
+      console.log('==============')
+      console.log(newVal.length)
+
+      if (newVal.length === 0) {
         this.isSaveBtn = false
       }
     }
