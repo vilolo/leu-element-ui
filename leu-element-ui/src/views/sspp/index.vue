@@ -28,7 +28,16 @@
             <el-input v-model="kw" />
           </el-col>
         </span>
-        <el-button type="danger" @click="openUrl(urlList.taobao, kw, true)">搜索</el-button>
+        <el-button type="danger" @click="openUrl(urlList.taobao, kw, true)">搜索</el-button><br><br>
+        <el-row>
+          <el-radio v-for="(item, index) in storeList" :key="item.id" v-model="shop" :label="index">{{ item }}</el-radio><br><br>
+          <el-input
+            v-model="keywords"
+            :autosize="{ minRows: 10}"
+            type="textarea"
+          />
+          <el-button type="primary" @click="searchKws">搜索</el-button>
+        </el-row>
       </el-tab-pane>
       <el-tab-pane label="模板">
         <stemplate />
@@ -48,7 +57,16 @@ export default {
   data() {
     return {
       urlList: urlList,
-      kw: ''
+      kw: '',
+      keywords: '',
+      storeList: {
+        my: '马来',
+        tw: '台湾',
+        th: '泰国',
+        br: '巴西',
+        sg: '新加坡'
+      },
+      shop: 'my'
     }
   },
   methods: {
@@ -61,6 +79,16 @@ export default {
       }
       for (const item in urlList) {
         window.open(urlList[item].replace('@keyword@', keyword))
+      }
+    },
+    searchKws() {
+      const arr = this.keywords.split('\n')
+      console.log(arr)
+      for (let i = 0; i < arr.length; i++) {
+        const kw = arr[i].replace(/(^\s*)|(\s*$)/g, '')
+        if (kw) {
+          window.open('/#/sspp/table?type=1&oversea=-2&keyword=' + kw + '&shop=' + this.shop, '_blank')
+        }
       }
     }
   }
