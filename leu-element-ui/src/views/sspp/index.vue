@@ -20,6 +20,7 @@
         <h2 />
         工具：<el-button type="success" @click="openUrl(urlList.countPrice)">计价</el-button>
         <el-button type="success" @click="openUrl(urlList.translate)">翻译</el-button>
+        <el-button type="success" @click="openUrl(urlList.allCategory)">所有分类</el-button>
 
         <h2 />
         搜索：
