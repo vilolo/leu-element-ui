@@ -31,6 +31,11 @@ const ssppRouter = {
       path: 'search-log',
       component: () => import('@/views/sspp/search-log'),
       hidden: true
+    },
+    {
+      path: 'category',
+      component: () => import('@/views/sspp/category'),
+      hidden: true
     }
   ]
 }

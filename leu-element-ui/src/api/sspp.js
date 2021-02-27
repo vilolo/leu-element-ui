@@ -73,3 +73,10 @@ export function delSearchLog(id) {
     params: { id: id }
   })
 }
+
+export function allCategory() {
+  return request({
+    url: lumenApi + '/allCategory',
+    method: 'get'
+  })
+}

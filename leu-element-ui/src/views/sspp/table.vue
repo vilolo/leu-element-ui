@@ -12,6 +12,7 @@
           <el-input v-model="maxPrice" style="width: 200px;" placeholder="最高" />
           <br><br>
 
+          <el-radio v-model="oversea" label="">All</el-radio>
           <el-radio v-model="oversea" label="-1">Location</el-radio>
           <el-radio v-model="oversea" label="-2">Oversea</el-radio><br>
 
