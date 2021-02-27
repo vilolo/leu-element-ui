@@ -363,6 +363,10 @@ export default {
     list(newVal, oldVal) {
       if (newVal.length === 0) {
         this.isSaveBtn = false
+      } else {
+        if (this.type !== '4') {
+          this.isSaveBtn = true
+        }
       }
     }
   },
@@ -526,7 +530,7 @@ export default {
         maxPrice: this.maxPrice,
         oversea: this.oversea,
         newest: this.newest,
-        cids: this.cid,
+        cid: this.cid,
         dataFrom: this.dataFrom,
         cname: this.cname
       }).then(response => {
