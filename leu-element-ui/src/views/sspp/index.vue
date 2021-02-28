@@ -6,6 +6,7 @@
         后台：<el-button type="primary" @click="openUrl(urlList.allStore1)">打开第一批</el-button>
         <el-button type="primary" @click="openUrl(urlList.allStore2)">KitiMall</el-button>
         <el-button type="primary" @click="openUrl(urlList.dianxiaomi)">小秘</el-button>
+        <el-button type="primary" @click="openUrl(urlList.yuncang)">小云</el-button>
         <el-button type="primary" @click="openUrl(urlList.data)">数据</el-button>
         <el-button type="primary" @click="openUrl(urlList.market)">分析</el-button>
 

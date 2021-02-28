@@ -53,5 +53,6 @@ export const urlList = {
     'https://s.1688.com/kuajing/offer_search.htm?keywords=@keyword@'
   ],
 
-  allCategory: ['/#/sspp/category']
+  allCategory: ['/#/sspp/category'],
+  yuncang: ['https://www.xmyc.com/dashboard.htm']
 }
