@@ -94,15 +94,15 @@
           </el-button>
 
           <br>
-          <el-select v-model="cidSg" placeholder="请选择">
+          <el-select v-model="cidBr" placeholder="请选择">
             <el-option
               v-for="item in categoryList['br']"
               :key="item.cid"
-              :label="item.cname"
+              :label="item.name"
               :value="item.cid"
             />
           </el-select>
-          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidBr)">
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidBr, 'br')">
             巴西
           </el-button>
           <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('br')">
@@ -447,7 +447,7 @@ export default {
       const c = this.categoryList[shop]
       for (const i in c) {
         setTimeout(function() {
-          window.open('/#/sspp/table?type=3&dataFrom=offline&oversea=-2&cname=' + c[i].cname + '&shop=' + shop + '&cid=' + c[i].cid, '_blank')
+          window.open('/#/sspp/table?type=3&dataFrom=offline&oversea=-2&cname=' + c[i].name + '&shop=' + shop + '&cid=' + c[i].cid, '_blank')
           // console.log(i)
         }, i * this.randomNum(600, 1200))
       }
