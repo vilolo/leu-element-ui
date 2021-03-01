@@ -73,7 +73,6 @@
           <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidTh)">
             泰国
           </el-button>
-
           <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('th')">
             open all th
           </el-button>
@@ -92,6 +91,22 @@
           </el-button>
           <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('sg')">
             open all sg
+          </el-button>
+
+          <br>
+          <el-select v-model="cidSg" placeholder="请选择">
+            <el-option
+              v-for="item in categoryList['br']"
+              :key="item.cid"
+              :label="item.cname"
+              :value="item.cid"
+            />
+          </el-select>
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidBr)">
+            巴西
+          </el-button>
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('br')">
+            open all br
           </el-button>
 
           <el-col>
@@ -346,13 +361,15 @@ export default {
         my: [],
         tw: [],
         th: [],
-        sg: []
+        sg: [],
+        br: []
       },
       cid: this.$route.query.cid,
       cidMy: '',
       cidTw: '',
       cidTh: '',
       cidSg: '',
+      cidBr: '',
       dataFrom: this.$route.query.dataFrom,
       cname: this.$route.query.cname,
       isSaveBtn: false
@@ -383,6 +400,10 @@ export default {
 
     getCategory({ shop: 'sg' }).then(response => {
       this.categoryList['sg'] = response.data
+    })
+
+    getCategory({ shop: 'br' }).then(response => {
+      this.categoryList['br'] = response.data
     })
 
     if (typeof (this.$route.query.type) !== 'undefined') {
