@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box">
     <el-radio v-model="fromType" label="online">线上</el-radio>
     <el-radio v-model="fromType" label="offline">离线</el-radio><br>
     <el-tabs @tab-click="handleClick">
@@ -47,3 +47,7 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+  .box { margin: 10px 20px 0; }
+  button {margin: 3px;}
+</style>

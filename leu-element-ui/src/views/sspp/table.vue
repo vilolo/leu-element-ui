@@ -32,11 +32,11 @@
             <el-option
               v-for="item in categoryList['my']"
               :key="item.cid"
-              :label="item.cname"
+              :label="item.name"
               :value="item.cid"
             />
           </el-select>
-          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidMy)">
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidMy, 'my')">
             马来
           </el-button>
 
@@ -49,11 +49,11 @@
             <el-option
               v-for="item in categoryList['tw']"
               :key="item.cid"
-              :label="item.cname"
+              :label="item.name"
               :value="item.cid"
             />
           </el-select>
-          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidTw)">
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidTw, 'tw')">
             台湾
           </el-button>
 
@@ -66,11 +66,11 @@
             <el-option
               v-for="item in categoryList['th']"
               :key="item.cid"
-              :label="item.cname"
+              :label="item.name"
               :value="item.cid"
             />
           </el-select>
-          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidTh)">
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidTh, 'th')">
             泰国
           </el-button>
           <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('th')">
@@ -82,11 +82,11 @@
             <el-option
               v-for="item in categoryList['sg']"
               :key="item.cid"
-              :label="item.cname"
+              :label="item.name"
               :value="item.cid"
             />
           </el-select>
-          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidSg)">
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(cidSg, 'sg')">
             新加坡
           </el-button>
           <el-button class="filter-item" type="primary" icon="el-icon-search" @click="openCategory('sg')">
@@ -112,10 +112,11 @@
           <el-col>
             <el-button type="success" @click="openCollect">打开商品收藏</el-button>
             <el-button type="warning" @click="openSearchLog">打开查询收藏</el-button>
-            <el-button v-if="isSaveBtn" type="danger" @click="saveSearchLog">收藏该查询</el-button>
           </el-col>
         </el-col>
       </el-row>
+
+      <el-button v-if="isSaveBtn" type="danger" @click="saveSearchLog">收藏该查询</el-button>
 
       <br><br>
       <span v-if=" (typeof(this.$route.query.cname) !== 'undefined') "> 【 分类：{{ this.$route.query.cname }} 】</span>
@@ -377,11 +378,12 @@ export default {
   },
   watch: {
     list(newVal, oldVal) {
-      console.log('==============')
-      console.log(newVal.length)
-
       if (newVal.length === 0) {
         this.isSaveBtn = false
+      } else {
+        if (this.type !== '4') {
+          this.isSaveBtn = true
+        }
       }
     }
   },
@@ -411,7 +413,7 @@ export default {
     }
   },
   methods: {
-    handleFilter(cid) {
+    handleFilter(cid, shop) {
       this.list = []
       let type = this.type
       this.listLoading = true
@@ -421,7 +423,7 @@ export default {
       }
       getMarketData({
         keyword: this.keyword,
-        shop: this.shop,
+        shop: typeof shop === 'undefined' ? this.shop : shop,
         type: type,
         minPrice: this.minPrice,
         maxPrice: this.maxPrice,
@@ -549,7 +551,7 @@ export default {
         maxPrice: this.maxPrice,
         oversea: this.oversea,
         newest: this.newest,
-        cids: this.cid,
+        cid: this.cid,
         dataFrom: this.dataFrom,
         cname: this.cname
       }).then(response => {

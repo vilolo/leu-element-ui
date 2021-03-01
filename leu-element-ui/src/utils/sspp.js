@@ -51,5 +51,8 @@ export const urlList = {
     'https://s.taobao.com/search?q=@keyword@',
     'https://s.1688.com/selloffer/offer_search.htm?keywords=@keyword@',
     'https://s.1688.com/kuajing/offer_search.htm?keywords=@keyword@'
-  ]
+  ],
+
+  allCategory: ['/#/sspp/category'],
+  yuncang: ['https://www.xmyc.com/dashboard.htm']
 }
