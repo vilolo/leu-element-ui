@@ -378,7 +378,7 @@ export default {
   },
   watch: {
     list(newVal, oldVal) {
-      if (newVal.length === 0) {
+      if (typeof newVal === 'undefined' || newVal.length === 0) {
         this.isSaveBtn = false
       } else {
         if (this.type !== '4') {
@@ -439,7 +439,10 @@ export default {
         this.totalGoods = response.data.info.total_count
         this.totalAds = response.data.info.total_ads_count
         this.isSaveBtn = this.isSaveBtn = typeof (this.$route.query.type) === 'undefined'
-      }).catch((e) => {})
+      })
+      // .catch((e) => {
+      //   console.log(e)
+      // })
       this.listLoading = false
     },
 
