@@ -125,9 +125,9 @@
       <span>
         <el-tag>商品总数：{{ totalGoods }}</el-tag>,
         <el-tag>广告数：{{ totalAds }}</el-tag>,
-        <el-tag type="success">平均商品每日收益：{{ perProductProfit }}</el-tag>,
-        <el-tag type="info">平均商品每日浏览量：{{ perViewProduct }}</el-tag>,
-        <el-tag type="danger">平均（收益/浏览量）：{{ avgProfitPerView }}</el-tag>
+        <el-tag type="success">收益（平均商品每日收益）：{{ perProductProfit }}</el-tag>,
+        <el-tag type="info">热度（平均商品每日浏览量）：{{ perViewProduct }}</el-tag>,
+        <el-tag type="danger">平均转化（收益/浏览量）：{{ avgProfitPerView }}</el-tag>
       </span>
     </div>
     <el-table
@@ -293,7 +293,7 @@
       </el-table-column>
 
       <el-table-column
-        label="总收益/总浏览量"
+        label="转化（总收益/总浏览量）"
         prop="profitPerView"
         sortable
         align="center"
