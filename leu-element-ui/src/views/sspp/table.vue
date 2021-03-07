@@ -119,8 +119,16 @@
       <el-button v-if="isSaveBtn" type="danger" @click="saveSearchLog">收藏该查询</el-button>
 
       <br><br>
-      <span v-if=" (typeof(this.$route.query.cname) !== 'undefined') "> 【 分类：{{ this.$route.query.cname }} 】</span>
-      <span>商品总数：{{ totalGoods }}, 广告数：{{ totalAds }}</span>
+      <span v-if=" (typeof(this.$route.query.cname) !== 'undefined') ">
+        【 分类：{{ this.$route.query.cname }} 】,
+      </span>
+      <span>
+        <el-tag>商品总数：{{ totalGoods }}</el-tag>,
+        <el-tag>广告数：{{ totalAds }}</el-tag>,
+        <el-tag type="success">平均商品每日收益：{{ perProductProfit }}</el-tag>,
+        <el-tag type="info">平均商品每日浏览量：{{ perViewProduct }}</el-tag>,
+        <el-tag type="danger">平均（收益/浏览量）：{{ avgProfitPerView }}</el-tag>
+      </span>
     </div>
     <el-table
       v-loading="listLoading"
@@ -285,6 +293,19 @@
       </el-table-column>
 
       <el-table-column
+        label="总收益/总浏览量"
+        prop="profitPerView"
+        sortable
+        align="center"
+        width="80"
+        :sort-method="(a,b) => sortMethod(a ,b , 'profitPerView')"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.profitPerView }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
         label="平均收藏"
         prop="avgLike"
         sortable
@@ -373,7 +394,10 @@ export default {
       cidBr: '',
       dataFrom: this.$route.query.dataFrom,
       cname: this.$route.query.cname,
-      isSaveBtn: false
+      isSaveBtn: false,
+      perViewProduct: 0,
+      avgProfitPerView: 0,
+      perProductProfit: 0
     }
   },
   watch: {
@@ -438,6 +462,9 @@ export default {
         this.list = response.data.goodsList
         this.totalGoods = response.data.info.total_count
         this.totalAds = response.data.info.total_ads_count
+        this.perViewProduct = response.data.info.perViewProduct
+        this.perProductProfit = response.data.info.perProductProfit
+        this.avgProfitPerView = response.data.info.avgProfitPerView
         this.isSaveBtn = this.isSaveBtn = typeof (this.$route.query.type) === 'undefined'
       })
       // .catch((e) => {
