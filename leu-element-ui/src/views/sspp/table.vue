@@ -542,7 +542,7 @@ export default {
     },
 
     collect(row) {
-      addCollect({ row: row }).then(response => {
+      addCollect({ row: row, shop: this.shop }).then(response => {
         this.$message({
           message: response.msg,
           type: response.code === 20000 ? 'success' : 'error'
