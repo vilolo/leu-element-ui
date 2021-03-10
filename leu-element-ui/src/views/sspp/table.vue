@@ -128,7 +128,8 @@
       <span>
         <el-tag>商品总数：{{ totalGoods }}</el-tag>,
         <el-tag>广告数：{{ totalAds }}</el-tag>,
-        <el-tag type="success">收益（平均商品每日收益）：{{ perProductProfit }}</el-tag>,
+        <el-tag v-if="currency_type !== '1'" type="success">收益（平均商品每日收益）：{{ perProductProfit }}</el-tag>,
+        <el-tag v-if="currency_type === '1'" type="success">收益（平均商品每日收益）：{{ rmb_perProductProfit }}</el-tag>,
         <el-tag type="info">热度（平均商品每日浏览量）：{{ perViewProduct }}</el-tag>,
         <el-tag type="danger">平均转化（收益/浏览量）：{{ avgProfitPerView }}</el-tag>
       </span>
@@ -382,7 +383,7 @@ export default {
         br: '巴西',
         sg: '新加坡'
       },
-      currency_type: 0,
+      currency_type: '0',
       currencyRateList: {
         rmb1_my: 0.6284,
         rmb1_tw: 4.3535,
@@ -407,8 +408,11 @@ export default {
       cname: this.$route.query.cname,
       isSaveBtn: false,
       perViewProduct: 0,
+      rmb_perViewProduct: 0,
       avgProfitPerView: 0,
-      perProductProfit: 0
+      rmb_avgProfitPerView: 0,
+      perProductProfit: 0,
+      rmb_perProductProfit: 0
     }
   },
   watch: {
@@ -479,6 +483,9 @@ export default {
         this.perProductProfit = response.data.info.perProductProfit
         this.avgProfitPerView = response.data.info.avgProfitPerView
         this.isSaveBtn = this.isSaveBtn = typeof (this.$route.query.type) === 'undefined'
+
+        this.rmb_perViewProduct = (response.data.info.perViewProduct / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+        this.rmb_perProductProfit = (response.data.info.perProductProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
       })
       // .catch((e) => {
       //   console.log(e)
