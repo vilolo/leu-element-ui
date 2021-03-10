@@ -116,6 +116,9 @@
         </el-col>
       </el-row>
 
+      <el-radio v-model="currency_type" label="0">原币</el-radio>
+      <el-radio v-model="currency_type" label="1">RMB</el-radio>
+
       <el-button v-if="isSaveBtn" type="danger" @click="saveSearchLog">收藏该查询</el-button>
 
       <br><br>
@@ -358,6 +361,14 @@ export default {
         br: '巴西',
         sg: '新加坡'
       },
+      currency_type: 0,
+      currencyRateList: {
+        rmb1_my: 0.6284,
+        rmb1_tw: 4.3535,
+        rmb1_th: 4.6511,
+        rmb1_br: 0.8521,
+        rmb1_sg: 0.2064
+      },
       categoryList: {
         my: [],
         tw: [],
@@ -434,6 +445,8 @@ export default {
       }).then(response => {
         for (const index in response.data.goodsList) {
           response.data.goodsList[index].isShow = true
+
+          // 人民币数据
         }
         this.list = response.data.goodsList
         this.totalGoods = response.data.info.total_count
