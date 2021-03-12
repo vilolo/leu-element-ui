@@ -128,10 +128,14 @@
       <span>
         <el-tag>商品总数：{{ totalGoods }}</el-tag>,
         <el-tag>广告数：{{ totalAds }}</el-tag>,
+
         <el-tag v-if="currency_type !== '1'" type="success">收益（平均商品每日收益）：{{ perProductProfit }}</el-tag>,
-        <el-tag v-if="currency_type === '1'" type="success">收益（平均商品每日收益）：{{ rmb_perProductProfit }}</el-tag>,
+        <el-tag v-if="currency_type === '1'" type="success">收益（平均商品每日收益）：￥{{ rmb_perProductProfit }}</el-tag>,
+
         <el-tag type="info">热度（平均商品每日浏览量）：{{ perViewProduct }}</el-tag>,
-        <el-tag type="danger">平均转化（收益/浏览量）：{{ avgProfitPerView }}</el-tag>
+
+        <el-tag v-if="currency_type !== '1'" type="danger">平均转化（收益/浏览量）：{{ avgProfitPerView }}</el-tag>
+        <el-tag v-if="currency_type === '1'" type="danger">平均转化（收益/浏览量）：￥{{ rmb_avgProfitPerView }}</el-tag>
       </span>
     </div>
     <el-table
@@ -170,7 +174,8 @@
         :sort-method="(a,b) => sortMethod(a ,b , 'price')"
       >
         <template slot-scope="{row}">
-          <span>{{ row.price }}</span>
+          <span v-if="currency_type !== '1'">{{ row.price }}</span>
+          <span v-if="currency_type === '1'">￥{{ row.rmb_price }}</span>
         </template>
       </el-table-column>
       <el-table-column label="ctime" prop="ctime" sortable align="center" width="80">
@@ -222,7 +227,8 @@
           :sort-method="(a,b) => sortMethod(a ,b , 'soldProfit')"
         >
           <template slot-scope="{row}">
-            <span>{{ row.soldProfit }}</span>
+            <span v-if="currency_type !== '1'">{{ row.soldProfit }}</span>
+            <span v-if="currency_type === '1'">￥{{ row.rmb_soldProfit }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -234,7 +240,8 @@
           :sort-method="(a,b) => sortMethod(a ,b , 'avgSoldProfit')"
         >
           <template slot-scope="{row}">
-            <span>{{ row.avgSoldProfit }}</span>
+            <span v-if="currency_type !== '1'">{{ row.avgSoldProfit }}</span>
+            <span v-if="currency_type === '1'">￥{{ row.rmb_avgSoldProfit }}</span>
           </template>
         </el-table-column>
       </el-table-column>
@@ -279,7 +286,8 @@
           :sort-method="(a,b) => sortMethod(a ,b , 'soldHistoricalProfit')"
         >
           <template slot-scope="{row}">
-            <span>{{ row.soldHistoricalProfit }}</span>
+            <span v-if="currency_type !== '1'">{{ row.soldHistoricalProfit }}</span>
+            <span v-if="currency_type === '1'">￥{{ row.rmb_soldHistoricalProfit }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -291,7 +299,8 @@
           :sort-method="(a,b) => sortMethod(a ,b , 'avgSoldHistoricalProfit')"
         >
           <template slot-scope="{row}">
-            <span>{{ row.avgSoldHistoricalProfit }}</span>
+            <span v-if="currency_type !== '1'">{{ row.avgSoldHistoricalProfit }}</span>
+            <span v-if="currency_type === '1'">￥{{ row.rmb_avgSoldHistoricalProfit }}</span>
           </template>
         </el-table-column>
       </el-table-column>
@@ -305,7 +314,8 @@
         :sort-method="(a,b) => sortMethod(a ,b , 'profitPerView')"
       >
         <template slot-scope="{row}">
-          <span>{{ row.profitPerView }}</span>
+          <span v-if="currency_type !== '1'">{{ row.profitPerView }}</span>
+          <span v-if="currency_type === '1'">￥{{ row.rmb_profitPerView }}</span>
         </template>
       </el-table-column>
 
@@ -383,7 +393,7 @@ export default {
         br: '巴西',
         sg: '新加坡'
       },
-      currency_type: '0',
+      currency_type: typeof (this.$route.query.currency_type) === 'undefined' ? '0' : this.$route.query.currency_type,
       currencyRateList: {
         rmb1_my: 0.6284,
         rmb1_tw: 4.3535,
@@ -408,7 +418,6 @@ export default {
       cname: this.$route.query.cname,
       isSaveBtn: false,
       perViewProduct: 0,
-      rmb_perViewProduct: 0,
       avgProfitPerView: 0,
       rmb_avgProfitPerView: 0,
       perProductProfit: 0,
@@ -475,6 +484,12 @@ export default {
           response.data.goodsList[index].isShow = true
 
           // 人民币数据
+          response.data.goodsList[index].rmb_price = (response.data.goodsList[index].price / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+          response.data.goodsList[index].rmb_soldProfit = (response.data.goodsList[index].soldProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+          response.data.goodsList[index].rmb_avgSoldProfit = (response.data.goodsList[index].avgSoldProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+          response.data.goodsList[index].rmb_soldHistoricalProfit = (response.data.goodsList[index].soldHistoricalProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+          response.data.goodsList[index].rmb_avgSoldHistoricalProfit = (response.data.goodsList[index].avgSoldHistoricalProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+          response.data.goodsList[index].rmb_profitPerView = (response.data.goodsList[index].profitPerView / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
         }
         this.list = response.data.goodsList
         this.totalGoods = response.data.info.total_count
@@ -484,8 +499,8 @@ export default {
         this.avgProfitPerView = response.data.info.avgProfitPerView
         this.isSaveBtn = this.isSaveBtn = typeof (this.$route.query.type) === 'undefined'
 
-        this.rmb_perViewProduct = (response.data.info.perViewProduct / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
         this.rmb_perProductProfit = (response.data.info.perProductProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+        this.rmb_avgProfitPerView = (response.data.info.avgProfitPerView / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
       })
       // .catch((e) => {
       //   console.log(e)
@@ -497,7 +512,7 @@ export default {
       const c = this.categoryList[shop]
       for (const i in c) {
         setTimeout(function() {
-          window.open('/#/sspp/table?type=3&dataFrom=offline&oversea=-2&cname=' + c[i].name + '&shop=' + shop + '&cid=' + c[i].cid, '_blank')
+          window.open('/#/sspp/table?type=3&dataFrom=offline&currency_type=1&oversea=-2&cname=' + c[i].name + '&shop=' + shop + '&cid=' + c[i].cid, '_blank')
           // console.log(i)
         }, i * this.randomNum(600, 1200))
       }
