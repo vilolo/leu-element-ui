@@ -2,7 +2,7 @@
   <div class="box">
     <el-radio v-model="oversea" label="">All</el-radio>
     <el-radio v-model="oversea" label="-1">Location</el-radio>
-    <el-radio v-model="oversea" label="-2">Oversea</el-radio><br>
+    <el-radio v-model="oversea" label="-2">Oversea</el-radio><br><br>
 
     <el-radio v-model="fromType" label="online">线上</el-radio>
     <el-radio v-model="fromType" label="offline">离线</el-radio><br>
@@ -30,7 +30,7 @@ import { allCategory } from '@/api/sspp'
 export default {
   data() {
     return {
-      fromType: 'offline',
+      fromType: 'online',
       list: [],
       oversea: ''
     }
