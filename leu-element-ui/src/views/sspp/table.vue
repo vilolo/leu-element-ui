@@ -28,6 +28,9 @@
           <br>
         </el-col>
         <el-col :span="12">
+          <el-radio v-model="dataFrom" label="online">线上</el-radio>
+          <el-radio v-model="dataFrom" label="offline">离线</el-radio><br>
+
           <el-select v-model="cidMy" placeholder="请选择">
             <el-option
               v-for="item in categoryList['my']"
@@ -414,7 +417,7 @@ export default {
       cidTh: '',
       cidSg: '',
       cidBr: '',
-      dataFrom: this.$route.query.dataFrom,
+      dataFrom: typeof (this.$route.query.dataFrom) === 'undefined' ? 'online' : this.$route.query.dataFrom,
       cname: this.$route.query.cname,
       isSaveBtn: false,
       perViewProduct: 0,
@@ -510,9 +513,12 @@ export default {
 
     openCategory(shop) {
       const c = this.categoryList[shop]
+      var d = this.dataFrom
+      var os = this.oversea
+      var ct = this.currency_type
       for (const i in c) {
         setTimeout(function() {
-          window.open('/#/sspp/table?type=3&dataFrom=offline&currency_type=1&oversea=-2&cname=' + c[i].name + '&shop=' + shop + '&cid=' + c[i].cid, '_blank')
+          window.open('/#/sspp/table?type=3&dataFrom=' + d + '&currency_type=' + ct + '&oversea=' + os + '&cname=' + c[i].name + '&shop=' + shop + '&cid=' + c[i].cid, '_blank')
           // console.log(i)
         }, i * this.randomNum(600, 1200))
       }
