@@ -8,7 +8,7 @@
     <el-radio v-model="fromType" label="offline">离线</el-radio><br>
     <el-tabs @tab-click="handleClick">
       <template v-for="(item, key) in list">
-        <el-tab-pane :key="item.$index" :label="key">
+        <el-tab-pane :key="item.$index" :label="key" style="height:800px;overflow-y:auto;overflow-x:hidden;">
           <!-- <el-row v-for="(item, key) in list" v-bind:key="item.$index"> -->
           <el-row v-for="item2 in item" :key="item2.$index">
             <el-button type="primary" @click="openGoods(key,item2.cid, item2.name)">{{ item2.name }}</el-button>

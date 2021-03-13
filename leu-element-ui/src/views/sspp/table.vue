@@ -137,8 +137,8 @@
 
         <el-tag type="info">热度（平均商品每日浏览量）：{{ perViewProduct }}</el-tag>,
 
-        <el-tag v-if="currency_type !== '1'" type="danger">平均转化（收益/浏览量）：{{ avgProfitPerView }}</el-tag>
-        <el-tag v-if="currency_type === '1'" type="danger">平均转化（收益/浏览量）：￥{{ rmb_avgProfitPerView }}</el-tag>
+        <el-tag v-if="currency_type !== '1'" type="danger">转化（商品总平均浏览收益）：{{ avgProfitPerView }}</el-tag>
+        <el-tag v-if="currency_type === '1'" type="danger">转化（商品总平均浏览收益）：￥{{ rmb_avgProfitPerView }}</el-tag>
       </span>
     </div>
     <el-table
