@@ -1,5 +1,9 @@
 <template>
   <div class="box">
+    <el-radio v-model="oversea" label="">All</el-radio>
+    <el-radio v-model="oversea" label="-1">Location</el-radio>
+    <el-radio v-model="oversea" label="-2">Oversea</el-radio><br>
+
     <el-radio v-model="fromType" label="online">线上</el-radio>
     <el-radio v-model="fromType" label="offline">离线</el-radio><br>
     <el-tabs @tab-click="handleClick">
@@ -27,7 +31,8 @@ export default {
   data() {
     return {
       fromType: 'offline',
-      list: []
+      list: [],
+      oversea: ''
     }
   },
   created() {
@@ -42,7 +47,7 @@ export default {
     },
     openGoods(shop, cid, cname) {
       // dataFrom=offline 离线的
-      window.open('/#/sspp/table?type=3&dataFrom=' + this.fromType + '&oversea=-2&cname=' + cname + '&shop=' + shop + '&cid=' + cid, '_blank')
+      window.open('/#/sspp/table?type=3&dataFrom=' + this.fromType + '&oversea=' + this.oversea + '&cname=' + cname + '&shop=' + shop + '&cid=' + cid, '_blank')
     }
   }
 }
