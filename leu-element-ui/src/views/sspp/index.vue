@@ -76,11 +76,16 @@ export default {
       if (typeof (keyword) === 'undefined') {
         keyword = ''
       }
+      const oldkeyword = keyword
       if (keyword.length > 0 && isEncode === true) {
         keyword = $URL.encode(keyword)
       }
       for (const item in urlList) {
-        window.open(urlList[item].replace('@keyword@', keyword))
+        if (item.indexOf('@keyword@') > -1) {
+          window.open(urlList[item].replace('@keyword@', keyword))
+        } else {
+          window.open(urlList[item].replace('@oldkeyword@', oldkeyword))
+        }
       }
     },
     searchKws() {

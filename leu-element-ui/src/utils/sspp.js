@@ -49,6 +49,7 @@ export const urlList = {
 
   taobao: [
     'https://s.taobao.com/search?q=@keyword@',
+    'http://yangkeduo.com/search_result.html?search_key=@oldkeyword@',
     'https://s.1688.com/selloffer/offer_search.htm?keywords=@keyword@',
     'https://s.1688.com/kuajing/offer_search.htm?keywords=@keyword@'
   ],
