@@ -81,7 +81,7 @@ export default {
         keyword = $URL.encode(keyword)
       }
       for (const item in urlList) {
-        if (item.indexOf('@keyword@') > -1) {
+        if (urlList[item].indexOf('@keyword@') > -1) {
           window.open(urlList[item].replace('@keyword@', keyword))
         } else {
           window.open(urlList[item].replace('@oldkeyword@', oldkeyword))
