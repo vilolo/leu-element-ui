@@ -380,7 +380,7 @@ export default {
   data: function() {
     return {
       type: typeof (this.$route.query.type) === 'undefined' ? '1' : this.$route.query.type,
-      default_sort: this.$route.query.type !== '4' ? { prop: 'avgSold', order: 'descending' } : {},
+      default_sort: this.$route.query.type !== '4' ? { prop: 'avgViewCount', order: 'descending' } : {},
       listLoading: false,
       list: [],
       keyword: this.$route.query.keyword,
