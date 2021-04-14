@@ -163,6 +163,7 @@
       <el-table-column fixed label="NAME" prop="name" sortable align="center" width="120">
         <template slot-scope="{row}">
           <span><el-link type="primary" :href="row.url" target="_blank">{{ row.name }}</el-link></span>
+          <span>{{ row.shopInfo }}</span>
         </template>
       </el-table-column>
       <el-table-column fixed label="IMG" prop="name" sortable align="center" width="110">

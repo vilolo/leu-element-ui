@@ -5,3 +5,17 @@ npm i element-ui -S
 npm install -D sass-loader node-sass
 
 npm install --save axios
+
+
+-- vue-element-admin
+# clone the project
+git clone https://github.com/PanJiaChen/vue-element-admin.git
+
+# enter the project directory
+cd vue-element-admin
+
+# install dependency
+npm install
+
+# develop
+npm run dev
