@@ -163,15 +163,26 @@
       height="800"
       :default-sort="default_sort"
     >
-      <el-table-column fixed label="ID" prop="id" sortable align="center" width="50">
-        <template scope="scope">
+      <el-table-column
+        fixed
+        label="ShopID"
+        prop="id"
+        sortable
+        align="center"
+        width="50"
+        :sort-method="(a,b) => sortMethod(a ,b , 'shopid')"
+      >
+        <!-- <template scope="scope">
           <span>{{ scope.$index + 1 }}</span>
+        </template> -->
+        <template slot-scope="{row}">
+          <span>{{ row.shopid }}</span>
         </template>
       </el-table-column>
       <el-table-column fixed label="NAME" prop="name" sortable align="center" width="120">
         <template slot-scope="{row}">
           <span><el-link type="primary" :href="row.url" target="_blank">{{ row.name }}</el-link></span>
-          <span>{{ row.shopInfo }}</span>
+          <!-- <span>{{ row.shopInfo }}</span> -->
         </template>
       </el-table-column>
       <el-table-column fixed label="IMG" prop="name" sortable align="center" width="110">
