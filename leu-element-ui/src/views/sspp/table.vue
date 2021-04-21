@@ -26,6 +26,14 @@
             Search
           </el-button>
           <br>
+          <el-switch
+            v-model="getDetail"
+            active-color="#13ce66"
+            active-text="获取类目"
+            active-value="1"
+            inactive-value="0"
+            inactive-color="#ff4949"
+          />
         </el-col>
         <el-col :span="12">
           <el-radio v-model="dataFrom" label="online">线上</el-radio>
@@ -360,6 +368,17 @@
         </template>
       </el-table-column>
       <el-table-column
+        label="类目详情"
+        prop="cname"
+        sortable
+        align="center"
+        width="100"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.cname }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
         label="评分"
         prop="itemRating"
         sortable
@@ -428,7 +447,8 @@ export default {
       rmb_avgProfitPerView: 0,
       perProductProfit: 0,
       rmb_perProductProfit: 0,
-      avgAvgLike: 0
+      avgAvgLike: 0,
+      getDetail: 0
     }
   },
   watch: {
@@ -485,7 +505,8 @@ export default {
         oversea: this.oversea,
         newest: this.newest,
         cids: this.cid,
-        dataFrom: this.dataFrom
+        dataFrom: this.dataFrom,
+        getDetail: this.getDetail
       }).then(response => {
         for (const index in response.data.goodsList) {
           response.data.goodsList[index].isShow = true
