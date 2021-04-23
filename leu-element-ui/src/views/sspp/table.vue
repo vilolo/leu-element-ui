@@ -33,7 +33,13 @@
             active-value="1"
             inactive-value="0"
             inactive-color="#ff4949"
-          />
+          /><br><br>
+
+          <el-radio v-model="shop_type" :label="0">All</el-radio>
+          <el-radio v-model="shop_type" :label="1">MALL</el-radio>
+          <el-radio v-model="shop_type" :label="2">Preferred</el-radio>
+          <el-radio v-model="shop_type" :label="3">Preferred +</el-radio><br><br>
+
         </el-col>
         <el-col :span="12">
           <el-radio v-model="dataFrom" label="online">线上</el-radio>
@@ -183,6 +189,7 @@
         <template slot-scope="{row}">
           <span><el-link type="primary" :href="row.url" target="_blank">{{ row.name }}</el-link></span>
           <!-- <span>{{ row.shopInfo }}</span> -->
+          <el-tag v-if="row.shopType != ''" type="danger">{{ row.shopType }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column fixed label="IMG" prop="name" sortable align="center" width="110">
@@ -459,7 +466,8 @@ export default {
       perProductProfit: 0,
       rmb_perProductProfit: 0,
       avgAvgLike: 0,
-      getDetail: 0
+      getDetail: 0,
+      shop_type: 0
     }
   },
   watch: {
@@ -517,7 +525,8 @@ export default {
         newest: this.newest,
         cids: this.cid,
         dataFrom: this.dataFrom,
-        getDetail: this.getDetail
+        getDetail: this.getDetail,
+        shop_type: this.shop_type
       }).then(response => {
         for (const index in response.data.goodsList) {
           response.data.goodsList[index].isShow = true
