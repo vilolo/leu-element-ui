@@ -80,3 +80,11 @@ export function allCategory() {
     method: 'get'
   })
 }
+
+export function getDetail(params) {
+  return request({
+    url: lumenApi + '/getDetail',
+    method: 'get',
+    params: params
+  })
+}

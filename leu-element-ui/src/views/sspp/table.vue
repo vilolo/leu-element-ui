@@ -216,6 +216,8 @@
             {{ row.ctime }}
             <el-button v-if="(type != 4) && row.isShow" @click="collect(row)">收藏</el-button>
             <el-button v-if="(type == 4)" @click="delCollect(row.did)">删除</el-button>
+            <br>
+            <el-button @click="detail(row)">详情</el-button>
           </span>
         </template>
       </el-table-column>
@@ -409,11 +411,45 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-dialog title="详情" :visible.sync="dialogFormVisible">
+      <div>分类：{{ cpath }}</div>
+      <div>
+        <table style="border-right:1px solid #0094ff;border-bottom:1px solid #0094ff">
+          <tr>
+            <th style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;">图片</th>
+            <th style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;padding:20px">变参名</th>
+            <th style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;padding:20px">库存</th>
+            <th style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;padding:20px">价格</th>
+            <th style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;padding:20px">销量</th>
+            <th style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;padding:20px">总金额</th>
+          </tr>
+          <tr v-for="sku in itemSkuList" :key="sku.index">
+            <td style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;"><img v-if="sku.image !== ''" width="100px" :src="sku.image"></td>
+            <td style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;padding:20px">{{ sku.name }}</td>
+            <td style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;padding:20px">{{ sku.stock }}</td>
+            <td style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;padding:20px">{{ sku.price }}</td>
+            <td style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;padding:20px; color:red">{{ sku.sold }}</td>
+            <!-- <td style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;padding:20px;">{{ (sku.sold*sku.price).toFixed(2) }}</td> -->
+            <td style="border-left:1px solid #0094ff;border-top:1px solid #0094ff;padding:20px">{{ sku.total }}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          Cancel
+        </el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+          Confirm
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getMarketData, getCategory, addCollect, delCollect, saveSearchLog } from '@/api/sspp'
+import { getMarketData, getCategory, addCollect, delCollect, saveSearchLog, getDetail } from '@/api/sspp'
 export default {
   data: function() {
     return {
@@ -467,7 +503,10 @@ export default {
       rmb_perProductProfit: 0,
       avgAvgLike: 0,
       getDetail: 0,
-      shop_type: 0
+      shop_type: 0,
+      dialogFormVisible: false,
+      cpath: '',
+      itemSkuList: []
     }
   },
   watch: {
@@ -682,6 +721,26 @@ export default {
 
     openSearchLog() {
       window.open('/#/sspp/search-log')
+    },
+
+    detail(row) {
+      this.dialogFormVisible = true
+      getDetail({
+        shop: this.shop,
+        itemid: row.itemid,
+        shopid: row.shopid
+      }).then(response => {
+        this.itemSkuList = []
+        if (response.code !== 20000) {
+          this.$message({
+            message: response.msg,
+            type: response.code === 20000 ? 'success' : 'error'
+          })
+        } else {
+          this.cpath = response.data['cpath']
+          this.itemSkuList = response.data['skuList']
+        }
+      })
     }
   }
 }
