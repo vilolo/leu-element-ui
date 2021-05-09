@@ -133,6 +133,12 @@
         </el-col>
       </el-row>
 
+      <el-row v-if="(type == '4')">
+        <el-col :span="12">
+          <el-radio v-for="(item, index) in storeList" :key="item.id" v-model="shop" :label="index">{{ item }}</el-radio><br><br>
+        </el-col>
+      </el-row>
+
       <el-radio v-model="currency_type" label="0">原币</el-radio>
       <el-radio v-model="currency_type" label="1">RMB</el-radio>
 
@@ -517,6 +523,11 @@ export default {
         if (this.type !== '4') {
           this.isSaveBtn = true
         }
+      }
+    },
+    shop(newVal) {
+      if (this.type === '4') {
+        this.handleFilter()
       }
     }
   },
