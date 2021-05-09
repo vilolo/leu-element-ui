@@ -726,7 +726,7 @@ export default {
     detail(row) {
       this.dialogFormVisible = true
       getDetail({
-        shop: this.shop,
+        shop: row.shop ? row.shop : this.shop,
         itemid: row.itemid,
         shopid: row.shopid
       }).then(response => {
