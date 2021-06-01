@@ -9,6 +9,7 @@
         <el-button type="primary" @click="openUrl(urlList.yuncang)">小云</el-button>
         <el-button type="primary" @click="openUrl(urlList.data)">数据</el-button>
         <el-button type="primary" @click="openUrl(urlList.market)">分析</el-button>
+        <el-button type="primary" @click="openUrl(urlList.subaccount)">子母</el-button>
 
         <h2 />
         店铺：<el-button type="warning" @click="openUrl(urlList.jcz)">Jiangcz</el-button>

@@ -32,6 +32,7 @@ export const urlList = {
   ],
 
   dianxiaomi: ['https://www.dianxiaomi.com/crawl/index.htm'],
+  subaccount: ['https://subaccount.shopee.com/account'],
   translate: ['https://translate.google.cn/'],
   data: [
     'https://haiyingshuju.com/newsShopee/index.html#/shopee/goodsSearch',
