@@ -25,7 +25,7 @@
           <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter()">
             Search
           </el-button>
-          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(a, a, 1)">
+          <el-button class="filter-item" type="success" icon="el-icon-search" @click="handleFilter(a, a, 1)">
             导出
           </el-button>
           <br>
