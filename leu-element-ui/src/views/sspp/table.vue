@@ -561,7 +561,6 @@ export default {
   },
   methods: {
     handleFilter(cid, shop, isExport) {
-      this.list = []
       let type = this.type
       this.listLoading = true
       if (typeof cid !== 'undefined') {
@@ -583,10 +582,11 @@ export default {
         isExport: typeof isExport === 'undefined' ? 0 : isExport
       }
 
-      if (isExport === '1') {
+      if (isExport === 1) {
         var url = getMarketData(params, true)
         window.open(url, '_blank')
       } else {
+        this.list = []
         getMarketData(params).then(response => {
           for (const index in response.data.goodsList) {
             response.data.goodsList[index].isShow = true
