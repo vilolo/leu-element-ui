@@ -25,6 +25,9 @@
           <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter()">
             Search
           </el-button>
+          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter(a, a, 1)">
+            导出
+          </el-button>
           <br>
           <el-switch
             v-model="getDetail"
@@ -157,8 +160,8 @@
 
         <el-tag type="info">热度（平均商品每日浏览量）：{{ perViewProduct }}</el-tag>,
 
-        <el-tag v-if="currency_type !== '1'" type="danger">转化（商品总平均浏览收益）：{{ avgProfitPerView }}</el-tag>,
-        <el-tag v-if="currency_type === '1'" type="danger">转化（商品总平均浏览收益）：￥{{ rmb_avgProfitPerView }}</el-tag>,
+        <el-tag v-if="currency_type !== '1'" type="danger">转化（商品平均浏览收益）：{{ avgProfitPerView }}</el-tag>,
+        <el-tag v-if="currency_type === '1'" type="danger">转化（商品平均浏览收益）：￥{{ rmb_avgProfitPerView }}</el-tag>,
 
         <el-tag type="info">热度（平均商品每日收藏）：{{ avgAvgLike }}</el-tag>,
       </span>
@@ -346,7 +349,7 @@
       </el-table-column>
 
       <el-table-column
-        label="转化（总收益/总浏览量）"
+        label="转化（近期收益/浏览量）"
         prop="profitPerView"
         sortable
         align="center"
@@ -557,7 +560,7 @@ export default {
     }
   },
   methods: {
-    handleFilter(cid, shop) {
+    handleFilter(cid, shop, isExport) {
       this.list = []
       let type = this.type
       this.listLoading = true
@@ -565,7 +568,7 @@ export default {
         this.cid = cid
         type = 3
       }
-      getMarketData({
+      var params = {
         keyword: this.keyword,
         shop: typeof shop === 'undefined' ? this.shop : shop,
         type: type,
@@ -576,32 +579,41 @@ export default {
         cids: this.cid,
         dataFrom: this.dataFrom,
         getDetail: this.getDetail,
-        shop_type: this.shop_type
-      }).then(response => {
-        for (const index in response.data.goodsList) {
-          response.data.goodsList[index].isShow = true
+        shop_type: this.shop_type,
+        isExport: typeof isExport === 'undefined' ? 0 : isExport
+      }
 
-          // 人民币数据
-          response.data.goodsList[index].rmb_price = (response.data.goodsList[index].price / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
-          response.data.goodsList[index].rmb_soldProfit = (response.data.goodsList[index].soldProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
-          response.data.goodsList[index].rmb_avgSoldProfit = (response.data.goodsList[index].avgSoldProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
-          response.data.goodsList[index].rmb_soldHistoricalProfit = (response.data.goodsList[index].soldHistoricalProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
-          response.data.goodsList[index].rmb_avgSoldHistoricalProfit = (response.data.goodsList[index].avgSoldHistoricalProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
-          response.data.goodsList[index].rmb_profitPerView = (response.data.goodsList[index].profitPerView / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
-        }
-        this.list = response.data.goodsList
-        this.totalGoods = response.data.info.total_count
-        this.totalAds = response.data.info.total_ads_count
-        this.perViewProduct = response.data.info.perViewProduct
-        this.perProductProfit = response.data.info.perProductProfit
-        this.avgProfitPerView = response.data.info.avgProfitPerView
-        this.isSaveBtn = this.isSaveBtn = typeof (this.$route.query.type) === 'undefined'
+      if (isExport === '1') {
+        var url = getMarketData(params, true)
+        window.open(url, '_blank')
+      } else {
+        getMarketData(params).then(response => {
+          for (const index in response.data.goodsList) {
+            response.data.goodsList[index].isShow = true
 
-        this.rmb_perProductProfit = (response.data.info.perProductProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
-        this.rmb_avgProfitPerView = (response.data.info.avgProfitPerView / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+            // 人民币数据
+            response.data.goodsList[index].rmb_price = (response.data.goodsList[index].price / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+            response.data.goodsList[index].rmb_soldProfit = (response.data.goodsList[index].soldProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+            response.data.goodsList[index].rmb_avgSoldProfit = (response.data.goodsList[index].avgSoldProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+            response.data.goodsList[index].rmb_soldHistoricalProfit = (response.data.goodsList[index].soldHistoricalProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+            response.data.goodsList[index].rmb_avgSoldHistoricalProfit = (response.data.goodsList[index].avgSoldHistoricalProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+            response.data.goodsList[index].rmb_profitPerView = (response.data.goodsList[index].profitPerView / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+          }
+          this.list = response.data.goodsList
+          this.totalGoods = response.data.info.total_count
+          this.totalAds = response.data.info.total_ads_count
+          this.perViewProduct = response.data.info.perViewProduct
+          this.perProductProfit = response.data.info.perProductProfit
+          this.avgProfitPerView = response.data.info.avgProfitPerView
+          this.isSaveBtn = this.isSaveBtn = typeof (this.$route.query.type) === 'undefined'
 
-        this.avgAvgLike = response.data.info.avgAvgLike
-      })
+          this.rmb_perProductProfit = (response.data.info.perProductProfit / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+          this.rmb_avgProfitPerView = (response.data.info.avgProfitPerView / this.currencyRateList['rmb1_' + this.shop]).toFixed(2)
+
+          this.avgAvgLike = response.data.info.avgAvgLike
+        })
+      }
+
       // .catch((e) => {
       //   console.log(e)
       // })
