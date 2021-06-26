@@ -2,12 +2,20 @@ import request from '@/utils/request'
 
 var lumenApi = 'http://lumen.leu/index.php/admin/v1'
 // var lumenApi = 'http://198.35.45.87:9021/index.php/admin/v1'
-export function getMarketData(params) {
-  return request({
-    url: lumenApi + '/newOrganizeData',
-    method: 'get',
-    params: params
-  })
+export function getMarketData(params, isGetUrl) {
+  if (isGetUrl) {
+    var s = ''
+    for (const key in params) {
+      s += '&' + key + '=' + params[key]
+    }
+    return lumenApi + '/newOrganizeData?' + s.slice(1)
+  } else {
+    return request({
+      url: lumenApi + '/newOrganizeData',
+      method: 'get',
+      params: params
+    })
+  }
 }
 
 export function getTemplate(params) {
