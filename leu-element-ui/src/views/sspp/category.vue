@@ -10,20 +10,20 @@
       <template v-for="(item, key) in list">
         <el-tab-pane :key="item.$index" :label="key" style="height:800px;overflow-y:auto;overflow-x:hidden;">
           <!-- <el-row v-for="(item, key) in list" v-bind:key="item.$index"> -->
-          <template v-if="key != 'tw'">
-            <el-row v-for="item2 in item" :key="item2.$index">
-              <el-button type="primary" @click="openGoods(key,item2.cid, item2.zh_name)">{{ item2.name }}({{ item2.zh_name }})</el-button>
-              <el-row v-for="item3 in item2.child" :key="item3.$index">
-                <el-button type="success" @click="openGoods(key,item3.cid, item2.zh_name+'>'+item3.zh_name)">{{ item3.name }}({{ item3.zh_name }})</el-button>
-                <template v-for="item4 in item3.child">
-                  <el-button :key="item4.$index" type="info" plain @click="openGoods(key,item4.cid, item2.zh_name+'>'+item3.zh_name+'>'+item4.zh_name)">{{ item4.name }}({{ item4.zh_name }})</el-button>
-                  <el-button v-for="item5 in item4.child" :key="item5.$index" type="warning" plain @click="openGoods(key,item5.cid, item2.zh_name+'>'+item3.zh_name+'>'+item4.zh_name+'>'+item5.zh_name)">{{ item5.name }}({{ item5.zh_name }})</el-button>
-                </template>
-              </el-row>
-              <hr>
+          <!-- <template v-if="key != 'tw'"> -->
+          <el-row v-for="item2 in item" :key="item2.$index">
+            <el-button type="primary" @click="openGoods(key,item2.cid, item2.zh_name)">{{ item2.name }}({{ item2.zh_name }})</el-button>
+            <el-row v-for="item3 in item2.child" :key="item3.$index">
+              <el-button type="success" @click="openGoods(key,item3.cid, item2.zh_name+'>'+item3.zh_name)">{{ item3.name }}({{ item3.zh_name }})</el-button>
+              <template v-for="item4 in item3.child">
+                <el-button :key="item4.$index" type="info" plain @click="openGoods(key,item4.cid, item2.zh_name+'>'+item3.zh_name+'>'+item4.zh_name)">{{ item4.name }}({{ item4.zh_name }})</el-button>
+                <el-button v-for="item5 in item4.child" :key="item5.$index" type="warning" plain @click="openGoods(key,item5.cid, item2.zh_name+'>'+item3.zh_name+'>'+item4.zh_name+'>'+item5.zh_name)">{{ item5.name }}({{ item5.zh_name }})</el-button>
+              </template>
             </el-row>
-          </template>
-          <template v-if="key == 'tw'">
+            <hr>
+          </el-row>
+          <!-- </template> -->
+          <!-- <template v-if="key == 'tw'">
             <el-row v-for="item2 in item" :key="item2.$index">
               <el-button type="primary" @click="openGoods(key,item2.cid, item2.zh_name)">{{ item2.name }}</el-button>
               <el-row v-for="item3 in item2.child" :key="item3.$index">
@@ -38,7 +38,7 @@
               </el-row>
               <hr>
             </el-row>
-          </template>
+          </template> -->
         <!-- </el-row> -->
         </el-tab-pane>
       </template>
