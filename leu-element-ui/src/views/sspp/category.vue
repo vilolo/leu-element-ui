@@ -17,7 +17,10 @@
               <el-button type="success" @click="openGoods(key,item3.cid, item2.zh_name+'>'+item3.zh_name)">{{ item3.name }}({{ item3.zh_name }})</el-button>
               <template v-for="item4 in item3.child">
                 <el-button :key="item4.$index" type="info" plain @click="openGoods(key,item4.cid, item2.zh_name+'>'+item3.zh_name+'>'+item4.zh_name)">{{ item4.name }}({{ item4.zh_name }})</el-button>
-                <el-button v-for="item5 in item4.child" :key="item5.$index" type="warning" plain @click="openGoods(key,item5.cid, item2.zh_name+'>'+item3.zh_name+'>'+item4.zh_name+'>'+item5.zh_name)">{{ item5.name }}({{ item5.zh_name }})</el-button>
+                <template v-for="item5 in item4.child">
+                  <el-button :key="item5.$index" type="warning" plain @click="openGoods(key,item5.cid, item2.zh_name+'>'+item3.zh_name+'>'+item4.zh_name+'>'+item5.zh_name)">{{ item5.name }}({{ item5.zh_name }})</el-button>
+                  <el-button v-for="item6 in item5.child" :key="item6.$index" type="danger" plain @click="openGoods(key,item6.cid, item2.zh_name+'>'+item3.zh_name+'>'+item4.zh_name+'>'+item5.zh_name+'>'+item6.zh_name)">{{ item6.name }}({{ item6.zh_name }})</el-button>
+                </template>
               </template>
             </el-row>
             <hr>
