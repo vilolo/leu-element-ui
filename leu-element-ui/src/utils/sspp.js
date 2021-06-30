@@ -23,6 +23,8 @@ export const urlList = {
 
   market: ['/#/sspp/table'],
 
+  shopee: ['https://shopee.cn/edu/home'],
+
   countPrice: ['http://local.shop/pricePro.html'],
 
   allStore2: [
@@ -40,7 +42,7 @@ export const urlList = {
     'https://www.dny123.com/tools-shopeekw'
   ],
 
-  jcz: ['https://shopee.com.my/jiangcz.my'],
+  jcz: ['https://my.xiapibuy.com/jiangcz.my'],
   vil: ['https://xiapi.xiapibuy.com/vilolo99'],
   fei: ['https://th.xiapibuy.com/xiaofeifei.th'],
   yp: ['https://br.xiapibuy.com/youpin.br'],
