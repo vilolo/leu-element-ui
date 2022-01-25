@@ -1,24 +1,9 @@
 export const urlList = {
   allStore1: [
-    // 馬來
-    'https://seller.my.shopee.cn/',
-    'https://seller.my.shopee.cn/webchat/conversations',
+    // 馬來/台湾全球卖家
+    'https://seller.shopee.cn/',
+    'https://seller.shopee.cn/webchat/conversations'
 
-    // 台灣
-    'https://seller.xiapi.shopee.cn/',
-    'https://seller.xiapi.shopee.cn/webchat/conversations',
-
-    // 泰国
-    'https://seller.th.shopee.cn/',
-    'https://seller.th.shopee.cn/webchat/conversations',
-
-    // 巴西
-    'https://seller.br.shopee.cn/',
-    'https://seller.br.shopee.cn/webchat/conversations',
-
-    // 菲律宾
-    'https://seller.sg.shopee.cn/',
-    'https://seller.sg.shopee.cn/webchat/conversations'
   ],
 
   market: ['/#/sspp/table'],
