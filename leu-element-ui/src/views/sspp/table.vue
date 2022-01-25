@@ -419,6 +419,30 @@
           <span>{{ row.itemRating }}</span>
         </template>
       </el-table-column>
+      <el-table-column
+        label="评论"
+        prop="review"
+        sortable
+        align="center"
+        width="80"
+        :sort-method="(a,b) => sortMethod(a ,b , 'review')"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.review }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="评论率"
+        prop="reviewRate"
+        sortable
+        align="center"
+        width="80"
+        :sort-method="(a,b) => sortMethod(a ,b , 'reviewRate')"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.reviewRate }}</span>
+        </template>
+      </el-table-column>
     </el-table>
 
     <el-dialog title="详情" :visible.sync="dialogFormVisible">
